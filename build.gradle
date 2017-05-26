@@ -4,6 +4,9 @@ version '1.0-SNAPSHOT'
 description = 'Helper for XDE queue'
 
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName="ru.zhukov.xde.BootstrapApplication"
 
 sourceCompatibility = 1.8
 

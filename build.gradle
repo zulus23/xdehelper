@@ -1,3 +1,5 @@
+import com.sun.org.apache.xalan.internal.xsltc.cmdline.Compile
+
 /*
 
 plugins {
@@ -9,6 +11,9 @@ plugins {
 
 group 'ru.zhukov.xde'
 version '1.0-SNAPSHOT'
+
+
+
 
 description = 'Helper for XDE queue'
 
@@ -22,6 +27,11 @@ apply plugin: 'idea'
 mainClassName="ru.zhukov.xde.BootstrapApplication"
 
 sourceCompatibility = 1.8
+
+tasks.withType(Compile) {
+    encoding = 'UTF-8'
+}
+
 
 repositories {
     mavenCentral()

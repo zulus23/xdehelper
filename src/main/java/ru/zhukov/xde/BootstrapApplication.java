@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import ru.zhukov.xde.ui.XDEApplicationController;
 import ru.zhukov.xde.util.Databases;
 
+import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +40,7 @@ public class BootstrapApplication extends Application{
     }
 
     public static void main(String[] args) {
-         System.out.println(Databases.availableDatabases());
+
         launch(args);
     }
 }

@@ -26,10 +26,11 @@ public class XDEApplicationController implements Initializable {
 
         Map set = Databases.availableDatabases();
 
-        /*listEnterprise = new ComboBox();
-        listEnterprise.getItems().addAll(Databases.availableDatabases().get("ГОТЭК").getName());
+        listEnterprise = new ComboBox();
+        listEnterprise.getItems().addAll(Databases.availableDatabases().keySet());
+        listEnterprise.getSelectionModel().select(0);
         listEnterprise.setMinWidth(150);
-        toolBarApplication.getItems().add(listEnterprise);*/
+        toolBarApplication.getItems().add(listEnterprise);
 
     }
 }

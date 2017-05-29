@@ -6,6 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import ru.zhukov.xde.ui.XDEApplicationController;
+import ru.zhukov.xde.util.Databases;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Gukov on 26.05.2017.
@@ -35,6 +39,7 @@ public class BootstrapApplication extends Application{
     }
 
     public static void main(String[] args) {
+         System.out.println(Databases.availableDatabases());
         launch(args);
     }
 }

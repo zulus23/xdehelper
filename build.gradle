@@ -1,10 +1,23 @@
+/*
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'io.franzbecker.gradle-lombok' version '1.8'
+}
+*/
+
 group 'ru.zhukov.xde'
 version '1.0-SNAPSHOT'
 
 description = 'Helper for XDE queue'
 
+
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'idea'
+
+
 
 mainClassName="ru.zhukov.xde.BootstrapApplication"
 
@@ -15,5 +28,7 @@ repositories {
 }
 
 dependencies {
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    //testCompile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
 }

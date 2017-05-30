@@ -2,13 +2,11 @@ package ru.zhukov.xde.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.ToolBar;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import ru.zhukov.xde.action.ExitAction;
 import ru.zhukov.xde.action.ExportItemAction;
+import ru.zhukov.xde.action.PasteAction;
 import ru.zhukov.xde.util.Databases;
 
 import java.net.URL;
@@ -27,6 +25,11 @@ public class XDEApplicationController implements Initializable {
     @FXML
     private MenuItem miExportItem;
     @FXML
+    private MenuItem miPaste;
+
+
+
+    @FXML
     private TabPane tabPane;
 
 
@@ -38,7 +41,7 @@ public class XDEApplicationController implements Initializable {
         miExit.setAccelerator(KeyCombination.keyCombination("Ctrl+F4"));
 
         miExportItem.setOnAction(e -> new ExportItemAction(tabPane).action(e));
-
+        miPaste.setOnAction(e -> new PasteAction(tabPane.getSelectionModel().getSelectedItem()).action(e));
 
         Map set = Databases.availableDatabases();
 

@@ -32,7 +32,7 @@ public class PasteAction {
             tableView.getItems().clear();
             while (tokenizer.hasMoreTokens()){
 
-                tableView.getItems().add( new ItemClipBoard(tokenizer.nextToken()));
+               tableView.getItems().add( new ItemClipBoard(tokenizer.nextToken()));
             }
 
 

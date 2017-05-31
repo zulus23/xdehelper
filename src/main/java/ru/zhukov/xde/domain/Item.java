@@ -7,6 +7,8 @@ package ru.zhukov.xde.domain;
 
 import lombok.*;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 @Data
 @EqualsAndHashCode(of = "item")
 public class Item {

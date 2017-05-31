@@ -1,8 +1,11 @@
 package ru.zhukov.xde.ui;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import ru.zhukov.xde.action.ExitAction;
 import ru.zhukov.xde.action.ExportItemAction;
@@ -46,13 +49,28 @@ public class XDEApplicationController implements Initializable {
         Map set = Databases.availableDatabases();
 
         listEnterprise = new ComboBox();
+
+        listEnterprise.getSelectionModel().selectedItemProperty().addListener(e -> {
+            System.out.println(Databases.availableDatabases().get(listEnterprise.getSelectionModel().getSelectedItem()));
+        } );
         listEnterprise.getItems().addAll(Databases.availableDatabases().keySet());
         listEnterprise.getSelectionModel().select(0);
         listEnterprise.setMinWidth(150);
+
+        createButtonToolBar();
         toolBarApplication.getItems().add(listEnterprise);
 
 
 
 
     }
+
+    private void createButtonToolBar(){
+        Button runImportFromSL = new Button();
+        //showAccountRecordView.setTooltip(new Tooltip(resourceBundle.getString("tooltip.showProvod")));
+        runImportFromSL.setGraphic(new ImageView(new Image(getClass().getResource("/ru/zhukov/xde/assests/image32/database-import.png").toExternalForm())));
+        //runImportFromSL.setOnAction(this::showAccountRecordView);
+        toolBarApplication.getItems().add(runImportFromSL);
+    }
+
 }

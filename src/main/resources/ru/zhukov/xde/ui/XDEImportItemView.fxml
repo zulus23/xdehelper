@@ -15,7 +15,7 @@
                <children>
                   <TableView fx:id="itemView" prefHeight="398.0" prefWidth="326.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <columns>
-                      <TableColumn fx:id="columnItem" prefWidth="75.0" text="Изделие"  >
+                      <TableColumn fx:id="columnItem" prefWidth="75.0" text="Изделие для выгрузки"  >
                           <cellValueFactory><PropertyValueFactory property="item" /></cellValueFactory>
                       </TableColumn>
                      

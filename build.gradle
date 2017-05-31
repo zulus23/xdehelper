@@ -1,5 +1,7 @@
 import com.sun.org.apache.xalan.internal.xsltc.cmdline.Compile
 
+import javax.tools.JavaCompiler
+
 /*
 
 plugins {
@@ -8,6 +10,8 @@ plugins {
     id 'io.franzbecker.gradle-lombok' version '1.8'
 }
 */
+
+
 
 group 'ru.zhukov.xde'
 version '1.0-SNAPSHOT'
@@ -22,13 +26,14 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'idea'
 
+compileJava.options.encoding = 'UTF-8'
 
 
 mainClassName="ru.zhukov.xde.BootstrapApplication"
 
 sourceCompatibility = 1.8
 
-tasks.withType(Compile) {
+tasks.withType(JavaCompiler) {
     encoding = 'UTF-8'
 }
 

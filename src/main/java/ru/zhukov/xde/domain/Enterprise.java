@@ -10,7 +10,6 @@ import lombok.ToString;
 @Data
 @EqualsAndHashCode(of = "name")
 @ToString
-
 public class Enterprise {
     private final String name;
     private final String nameDatabase;

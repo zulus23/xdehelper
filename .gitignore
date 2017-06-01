@@ -84,4 +84,5 @@ fabric.properties
 .gitignore
 .gradle/
 .idea/
-/src/main/java/ru/zhukov/xde/db/ConnectString.java
+
+/src/main/java/ru/zhukov/xde/db/DBConnect.java

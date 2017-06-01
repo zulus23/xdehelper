@@ -12,12 +12,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Data
 @EqualsAndHashCode(of = "item")
 public class Item {
-
+    private String site;
     private String item;
-    private String name;
-    private String nameFull;
-    private String edizm;
-    private String nds;
-    private String parent;
+    private String description;
+    private String rusDescription;
+    private String codeSync;
+    private String tax;
+    private String productCode;
+    private String comment;
+
 
 }

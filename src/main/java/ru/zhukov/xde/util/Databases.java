@@ -1,9 +1,8 @@
 package ru.zhukov.xde.util;
 
-import ru.zhukov.xde.db.ConnectString;
+import ru.zhukov.xde.db.DBConnect;
 import ru.zhukov.xde.domain.Enterprise;
 
-import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -15,23 +14,23 @@ public class Databases {
     public static Map<String,Enterprise> availableDatabases(){
         Map<String,Enterprise> temp = new HashMap<>();
         temp.computeIfAbsent("ГОТЭК",key-> {
-            return new Enterprise(key,"SL_GOTEK", ConnectString.GOTEK);
+            return new Enterprise(key,"SL_GOTEK", DBConnect.GOTEK);
         });
         temp.computeIfAbsent("ЛИТАР",key-> {
-            return new Enterprise(key,"SL_LITAR", ConnectString.GOTEK);
+            return new Enterprise(key,"SL_LITAR", DBConnect.LITAR);
         });
         temp.computeIfAbsent("ЦПУ",key-> {
-            return new Enterprise(key,"SL_CPU", ConnectString.GOTEK);
+            return new Enterprise(key,"SL_CPU", DBConnect.CPU);
         });
         temp.computeIfAbsent("ПОЛИПАК",key-> {
-            return new Enterprise(key,"SL_POLYPACK", ConnectString.GOTEK);
+            return new Enterprise(key,"SL_POLYPACK", DBConnect.POLYPACK);
         });
         temp.computeIfAbsent("ПРИНТ",key-> {
-            return new Enterprise(key,"SL_PRINT", ConnectString.GOTEK);
+            return new Enterprise(key,"SL_PRINT", DBConnect.PRINT);
         });
-        temp.computeIfAbsent("НОВОМОСКОВСК",key-> {
+       /* temp.computeIfAbsent("НОВОМОСКОВСК",key-> {
             return new Enterprise(key,"SL_CENTER", ConnectString.GOTEK);
-        });
+        });*/
         return temp;
     }
 

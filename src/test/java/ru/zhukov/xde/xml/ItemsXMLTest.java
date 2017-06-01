@@ -33,7 +33,7 @@ public class ItemsXMLTest {
     @Test
     public void canCreateXMLFromObject(){
         ItemsXML itemsXML = new ItemsXML(String.valueOf(System.currentTimeMillis()));
-        itemsXML.getItm().add(new ItemsXML.ItemXML("GOTEK","1520716816","","","","",""));
+        itemsXML.getItm().add(new ItemsXML.ItemXML("GOTEK","1520716816","","","","","",""));
         try {
             StringWriter writer = new StringWriter();
             JAXBContext jaxbContext = JAXBContext.newInstance(itemsXML.getClass());
@@ -56,7 +56,7 @@ public class ItemsXMLTest {
         Path sourceXLS = Paths.get("d:/001/sl8_1C8_Item_30.xsl");
         Path outputXML = Paths.get("d:/001/test_trans_.xml");
         ItemsXML itemsXML = new ItemsXML(String.valueOf(System.currentTimeMillis()));
-        itemsXML.getItm().add(new ItemsXML.ItemXML("GOTEK","1520716816","","","","",""));
+        itemsXML.getItm().add(new ItemsXML.ItemXML("GOTEK","1520716816","","","","","",""));
         try {
             StringWriter writer = new StringWriter();
             JAXBContext jaxbContext = JAXBContext.newInstance(itemsXML.getClass());

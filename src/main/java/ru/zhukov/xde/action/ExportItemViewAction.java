@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.ui.XDEImportItemController;
 
 import java.io.IOException;
@@ -12,18 +13,21 @@ import java.io.IOException;
 /**
  * Created by Gukov on 30.05.2017.
  */
-public class ExportItemAction {
+public class ExportItemViewAction {
 
     private TabPane tabPane;
+    private  Enterprise selectedEnterprise;
 
-    public ExportItemAction(TabPane tabPane){
+    public ExportItemViewAction(TabPane tabPane, Enterprise selectedEnterprise){
+
         this.tabPane = tabPane;
+        this.selectedEnterprise = selectedEnterprise;
     }
 
 
     public  void action(ActionEvent actionEvent) {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ru/zhukov/xde/ui/XDEImportItemView.fxml"));
-        XDEImportItemController itemController = new XDEImportItemController();
+        XDEImportItemController itemController = new XDEImportItemController(selectedEnterprise);
         fxmlLoader.setController(itemController);
         try{
             AnchorPane itemView = fxmlLoader.load();

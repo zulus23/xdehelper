@@ -29,6 +29,9 @@ public class ItemsXML {
         private String rusExtDescription;
         @XmlAttribute(name = "Uf_Code_Sync")
         private String edizmCode;
+        @XmlAttribute(name = "tax_code1")
+        private String tax;
+
         @XmlAttribute(name = "product_code")
         private String groupCode;
         @XmlAttribute(name = "CommConv")
@@ -36,16 +39,17 @@ public class ItemsXML {
         public ItemXML(){
 
         }
-        public ItemXML(String site, String item, String description, String rusExtDescription, String edizmCode, String groupCode, String comment) {
+
+        public ItemXML(String site, String item, String description, String rusExtDescription, String edizmCode, String tax, String groupCode, String comment) {
             this.site = site;
             this.item = item;
             this.description = description;
             this.rusExtDescription = rusExtDescription;
             this.edizmCode = edizmCode;
+            this.tax = tax;
             this.groupCode = groupCode;
             this.comment = comment;
         }
-
 
         public String getSite() {
             return site;
@@ -74,11 +78,19 @@ public class ItemsXML {
         public String getComment() {
             return comment;
         }
+
+        public String getTax() {
+            return tax;
+        }
     }
 
     public ItemsXML(String seq) {
         this.seq = seq;
         this.itm = new ArrayList<>();
+    }
+
+    public String getSeq() {
+        return seq;
     }
 
     public List<ItemXML> getItm() {

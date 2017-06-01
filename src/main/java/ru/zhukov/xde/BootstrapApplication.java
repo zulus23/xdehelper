@@ -3,6 +3,7 @@ package ru.zhukov.xde;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import ru.zhukov.xde.ui.XDEApplicationController;
@@ -29,7 +30,8 @@ public class BootstrapApplication extends Application{
             Scene scene = new Scene(anchorPane);
 
             Stage stage = new Stage();
-
+            stage.setTitle(String.format("Экспорт из SL"));
+            stage.getIcons().add(new Image(getClass().getResource("/ru/zhukov/xde/assests/image/database-export.png").toExternalForm()));
             stage.setScene(scene);
             stage.show();
         }catch (Exception e ){

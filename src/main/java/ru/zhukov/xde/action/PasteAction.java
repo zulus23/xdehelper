@@ -25,7 +25,7 @@ public class PasteAction {
 
     public void action(ActionEvent e) {
         Clipboard clipboard = Clipboard.getSystemClipboard();
-        if( control.getText().equals("Экспорт изделий")){
+        if( control.getText().contains("Экспорт изделий")){
 
          TableView tableView =  FXUtils.getChildByID(control.getTabPane(),"itemView");
             StringTokenizer tokenizer = new StringTokenizer(clipboard.getString());

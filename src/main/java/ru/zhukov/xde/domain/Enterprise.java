@@ -3,7 +3,7 @@ package ru.zhukov.xde.domain;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import ru.zhukov.xde.db.ConnectString;
+import ru.zhukov.xde.db.DBConnect;
 
 /**
  * Created by Gukov on 29.05.2017.
@@ -14,5 +14,5 @@ import ru.zhukov.xde.db.ConnectString;
 public class Enterprise {
     private final String name;
     private final String nameDatabase;
-    private final ConnectString connectString;
+    private final DBConnect dbConnect;
 }

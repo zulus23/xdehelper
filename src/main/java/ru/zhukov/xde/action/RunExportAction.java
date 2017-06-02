@@ -9,6 +9,7 @@ import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.domain.Item;
 import ru.zhukov.xde.util.FXUtils;
 import ru.zhukov.xde.util.ItemClipBoard;
+import ru.zhukov.xde.util.SetupApplication;
 import ru.zhukov.xde.xml.ItemsXML;
 
 import javax.xml.bind.JAXBContext;
@@ -38,12 +39,18 @@ public class RunExportAction extends AbstractAction {
 
 
     public void action(ActionEvent e) {
-        Path sourceXLS = Paths.get("d:/001/sl8_1C8_Item_30.xsl");
+        Path sourceXLS = SetupApplication.getInstance().itemXsl();
         if (control.getText().contains("Экспорт изделий")) {
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
             List<String> strings = tableView.getItems().stream().map(s -> s.getItem()).collect(Collectors.toList());
 
+
+
+
             List<Item> itemList =  dataSelectable.selectItems(strings.toArray(new String[]{}));
+
+
+
 
             List<ItemsXML>  itemsXMLS =  itemList.stream().map(i ->{
                 ItemsXML itemsXML = new ItemsXML(String.valueOf(System.nanoTime()));
@@ -52,15 +59,41 @@ public class RunExportAction extends AbstractAction {
                 return itemsXML;
             }).collect(Collectors.toList());
 
+            try {
+                StringWriter writer = new StringWriter();
+                JAXBContext jaxbContext = JAXBContext.newInstance(ItemsXML.class);
+                Marshaller marshaller = jaxbContext.createMarshaller();
+                marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+                TransformerFactory factory = TransformerFactory.newInstance();
+                Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
+                transformer.setOutputProperty(OutputKeys.ENCODING,"windows-1251");
+                transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+                Writer xml = new StringWriter();
+                for (ItemsXML item:itemsXMLS) {
+                    writer.getBuffer().setLength(0);
+                    marshaller.marshal(item,writer);
+                     StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
+
+                    StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(String.format("d:/001/1/%10s_item_1c.xml",item.getSeq())), Charset.forName("windows-1251")));
+                    transformer.transform(xmlsource,output);
+                    output.getWriter().close();
+
+
+                }
+
+
+            }catch (Exception ex){
+
+            }
+        }
+            /*
             for (ItemsXML item:itemsXMLS) {
 
-                StringWriter writer = new StringWriter();
 
-                Marshaller marshaller = null;
+
+
                 try {
-                    JAXBContext jaxbContext = JAXBContext.newInstance(item.getClass());
-                    marshaller = jaxbContext.createMarshaller();
-                    marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
+
                     marshaller.marshal(item,writer);
                     TransformerFactory factory = TransformerFactory.newInstance();
                     Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
@@ -82,7 +115,7 @@ public class RunExportAction extends AbstractAction {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-
+*/
 
             }
 
@@ -92,6 +125,6 @@ public class RunExportAction extends AbstractAction {
 
 
 
-        }
-    }
-}
+ }
+
+

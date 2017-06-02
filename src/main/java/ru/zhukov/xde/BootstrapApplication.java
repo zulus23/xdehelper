@@ -6,12 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import ru.zhukov.xde.exception.BaseException;
 import ru.zhukov.xde.ui.XDEApplicationController;
-import ru.zhukov.xde.util.Databases;
-
-import java.nio.charset.Charset;
-import java.util.Map;
-import java.util.Set;
+import ru.zhukov.xde.util.SetupApplication;
 
 /**
  * Created by Gukov on 26.05.2017.

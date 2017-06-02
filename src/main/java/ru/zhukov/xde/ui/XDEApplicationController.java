@@ -2,6 +2,7 @@ package ru.zhukov.xde.ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -92,6 +93,7 @@ public class XDEApplicationController implements Initializable {
                                                               listEnterprise.getSelectionModel().getSelectedItem()).action(e));
         //runImportFromSL.setOnAction(this::showAccountRecordView);
         toolBarApplication.getItems().add(runImportFromSL);
+        toolBarApplication.getItems().add(new Separator(Orientation.VERTICAL));
     }
 
 }

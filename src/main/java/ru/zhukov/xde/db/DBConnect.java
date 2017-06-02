@@ -11,19 +11,19 @@ public enum DBConnect {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_gotek;username=sa;password=kbghbrjy";
         }
     },
-    LITAR{
+    Litar {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_litar;username=sa;password=kbghbrjy";
         }
     },
-    POLYPACK{
+    Polypack {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_polypack;username=sa;password=kbghbrjy";
         }
     },
-    PRINT{
+    Print {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_print;username=sa;password=kbghbrjy";

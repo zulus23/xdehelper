@@ -30,6 +30,10 @@ public class BootstrapApplication extends Application{
             stage.setTitle(String.format("Экспорт из SL"));
             stage.getIcons().add(new Image(getClass().getResource("/ru/zhukov/xde/assests/image/database-export.png").toExternalForm()));
             stage.setScene(scene);
+            stage.setMinWidth(800);
+            stage.setMinHeight(400);
+            stage.setMaximized(true);
+
             stage.show();
         }catch (Exception e ){
             e.printStackTrace();

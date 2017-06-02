@@ -86,3 +86,7 @@ fabric.properties
 .idea/
 
 /src/main/java/ru/zhukov/xde/db/DBConnect.java
+setup/
+src/main/java/ru/zhukov/xde/ui/setup/
+src/main/resources/ru/zhukov/xde/assests/image16/
+src/test/resoures/

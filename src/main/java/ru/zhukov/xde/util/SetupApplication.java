@@ -4,6 +4,8 @@ import ru.zhukov.xde.exception.BaseException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,7 +33,10 @@ public class SetupApplication {
                     instance = new SetupApplication();
                     try {
                         instance.createSetupPropertyFile();
-                        instance.properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
+                        try(InputStream inputStream = Files.newInputStream(setupPath,StandardOpenOption.READ)){
+                            instance.properties.load(inputStream);
+                        }
+
                     } catch (BaseException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -56,7 +61,10 @@ public class SetupApplication {
                     Properties properties = new Properties();
                     properties.setProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/sl8_1C8_Item_30.xsl");
                     properties.setProperty("outXml","//srv-slaps//InterfaceSL_1C//Out");
-                    properties.store(Files.newOutputStream(setupPath),"");
+                    try(OutputStream output = Files.newOutputStream(setupPath)){
+                        properties.store(output,"");
+                    }
+
 
                 }
 

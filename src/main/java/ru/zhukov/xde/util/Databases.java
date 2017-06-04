@@ -17,16 +17,16 @@ public class Databases {
             return new Enterprise(key,"SL_GOTEK", DBConnect.GOTEK);
         });
         temp.computeIfAbsent("ЛИТАР",key-> {
-            return new Enterprise(key,"SL_LITAR", DBConnect.Litar);
+            return new Enterprise(key,"SL_LITAR", DBConnect.LITAR);
         });
         temp.computeIfAbsent("ЦПУ",key-> {
             return new Enterprise(key,"SL_CPU", DBConnect.CPU);
         });
         temp.computeIfAbsent("ПОЛИПАК",key-> {
-            return new Enterprise(key,"SL_POLYPACK", DBConnect.Polypack);
+            return new Enterprise(key,"SL_POLYPACK", DBConnect.POLYPACK);
         });
         temp.computeIfAbsent("ПРИНТ",key-> {
-            return new Enterprise(key,"SL_PRINT", DBConnect.Print);
+            return new Enterprise(key,"SL_PRINT", DBConnect.PRINT);
         });
        /* temp.computeIfAbsent("НОВОМОСКОВСК",key-> {
             return new Enterprise(key,"SL_CENTER", ConnectString.GOTEK);

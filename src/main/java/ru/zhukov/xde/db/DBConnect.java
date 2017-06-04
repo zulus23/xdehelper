@@ -5,39 +5,46 @@ package ru.zhukov.xde.db;
  */
 public enum DBConnect {
 
-    GOTEK{
+    GOTEK("GOTEK"){
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_gotek;username=sa;password=kbghbrjy";
         }
     },
-    Litar {
+    LITAR("Litar") {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_litar;username=sa;password=kbghbrjy";
         }
     },
-    Polypack {
+    POLYPACK("Polypack") {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_polypack;username=sa;password=kbghbrjy";
         }
     },
-    Print {
+    PRINT("Print") {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_print;username=sa;password=kbghbrjy";
         }
     },
-    CPU{
+    CPU("CPU"){
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_cpu;username=sa;password=kbghbrjy";
         }
     };
 
+    private String nameDatabase;
 
+     DBConnect(String nameDatabase){
+        this.nameDatabase = nameDatabase;
+    }
 
+    public String getNameDatabase(){
+        return  nameDatabase;
+    }
 
     public abstract String connectString();
 

@@ -36,6 +36,7 @@
                       <Menu mnemonicParsing="false" text="Экспорт">
                         <items>
                           <MenuItem fx:id="miExportItem" mnemonicParsing="false" text="Выгрузить изделия" />
+                          <MenuItem fx:id="miExportPartner" mnemonicParsing="false" text="Выгрузить контрагентов" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">

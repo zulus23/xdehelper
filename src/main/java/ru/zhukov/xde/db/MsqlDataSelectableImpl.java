@@ -1,7 +1,9 @@
 package ru.zhukov.xde.db;
 
+import ru.zhukov.xde.domain.Customer;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.domain.Item;
+import ru.zhukov.xde.domain.Vendor;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
     @Override
     public List<Item> selectItems(String... items) {
 
-        String selectedItem =   Arrays.asList(items).stream().map(s -> String.format("'%s'",s)).collect(Collectors.joining(","));
+        String selectedItem = collectNameForSelect(items);
 
         String selecItem = String.format("SELECT '%s' as site, i.item, i.description,i.RUSExtDescription, m.Uf_Code_Sync,i.tax_code1"+
                                          ",i.product_code,comm_code as CommConv  FROM item i "+
@@ -44,6 +46,46 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
           catch (SQLException e) {
             e.printStackTrace();
         };
+        return null;
+    }
+
+    private String collectNameForSelect(String[] items) {
+        return Arrays.asList(items).stream().map(s -> String.format("'%s'",s)).collect(Collectors.joining(","));
+    }
+
+    @Override
+    public List<Customer> selectCustomers(String... items) {
+        String selectNumberCustomer = collectNameForSelect(items);
+        String sqlSelectCustomer = String.format("SELECT '%s',c.cust_num,c.name,c.RUSExtName,c.RUSinn,c.RUSkpp," +
+                                         " dbo.GTKFormatAddress(c.cust_num,0,'custaddr') as address,rowId,c.RUSokpo,c.zip,ISNULL(co.Uf_RUS_CountryCode,643)"+
+                                         " FROM dbo.custaddr c join ON c.cust_num = up.cust_num"+
+                                         " LEFT JOIN dbo.country co ON c.country = co.country"+
+                                         "WHERE c.cust_seq = 0 and c.cus_num in(%s)",enterprise.getDbConnect().getNameDatabase(),selectNumberCustomer);
+        try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlSelectCustomer);) {
+
+            return createListCustomer(resultSet);
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        };
+
+        return null;
+    }
+
+    private List<Customer> createListCustomer(ResultSet resultSet) throws SQLException {
+        List<Customer> customers = new ArrayList<>();
+        while(resultSet.next()){
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Vendor> selectVendors(String... items) {
         return null;
     }
 

@@ -8,10 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import javafx.util.StringConverter;
-import ru.zhukov.xde.action.ExitAction;
-import ru.zhukov.xde.action.ExportItemViewAction;
-import ru.zhukov.xde.action.PasteAction;
-import ru.zhukov.xde.action.RunExportAction;
+import ru.zhukov.xde.action.*;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.util.Databases;
 
@@ -35,6 +32,9 @@ public class XDEApplicationController implements Initializable {
     @FXML
     private MenuItem miExportItem;
     @FXML
+    private MenuItem miExportPartner;
+
+    @FXML
     private MenuItem miPaste;
 
 
@@ -51,6 +51,9 @@ public class XDEApplicationController implements Initializable {
         miExit.setAccelerator(KeyCombination.keyCombination("Ctrl+F4"));
 
         miExportItem.setOnAction(e -> new ExportItemViewAction(tabPane,listEnterprise.getSelectionModel().getSelectedItem()).action(e));
+        miExportPartner.setOnAction(e -> new ExportPartnerViewAction(tabPane,listEnterprise.getSelectionModel().getSelectedItem()).action(e));
+
+
         miPaste.setOnAction(e -> new PasteAction(tabPane.getSelectionModel().getSelectedItem()).action(e));
 
 

@@ -7,29 +7,30 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.ui.XDEImportItemController;
+import ru.zhukov.xde.ui.XDEImportPartnerController;
+import sun.plugin.dom.views.AbstractView;
 
 import java.io.IOException;
 
 /**
- * Created by Gukov on 30.05.2017.
+ * Created by Gukov on 05.06.2017.
  */
-public class ExportItemViewAction extends AbstractViewAction {
+public class ExportPartnerViewAction extends AbstractViewAction {
 
-    public ExportItemViewAction(TabPane tabPane, Enterprise selectedEnterprise){
-        super(tabPane, selectedEnterprise);
 
+    public ExportPartnerViewAction(TabPane tabPane, Enterprise selectedPartner) {
+        super(tabPane,selectedPartner);
     }
 
 
-    @Override
     public  void action(ActionEvent actionEvent) {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ru/zhukov/xde/ui/XDEImportItemView.fxml"));
-        XDEImportItemController itemController = new XDEImportItemController(selectedEnterprise);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/ru/zhukov/xde/ui/XDEImportPartnerView.fxml"));
+        XDEImportPartnerController itemController = new XDEImportPartnerController(selectedEnterprise);
         fxmlLoader.setController(itemController);
         try{
             AnchorPane itemView = fxmlLoader.load();
             Tab itemTab = new Tab();
-            itemTab.setText("Экспорт изделий");
+            itemTab.setText("Экспорт контрагентов");
             itemTab.setContent(itemView);
             tabPane.setTabMaxWidth(160);
             tabPane.getTabs().add(itemTab);

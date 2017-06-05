@@ -94,6 +94,18 @@ public class SetupApplication {
        return Paths.get(properties.getProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/sl8_1C8_Item_30.xsl"));
 
     }
+    public  Path customerXsl(){
+        //properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
+        return Paths.get(properties.getProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/Cust.xsl"));
+
+    }
+    public  Path vendorXsl(){
+        //properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
+        return Paths.get(properties.getProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/Vend.xsl"));
+
+    }
+
+
     public Path pathOutXml(){
        return Paths.get(properties.getProperty("outXml","//srv-slaps//InterfaceSL_1C//Out"));
      }

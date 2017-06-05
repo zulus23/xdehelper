@@ -34,7 +34,7 @@ public class RunExportAction extends AbstractAction {
 
     private DataSelectable  dataSelectable;
 
-    private Path sourceXLS;
+    private Path sourceXLS, outputDirectoryXML;
     public RunExportAction(Tab selectedTab, Enterprise enterprise) {
         super(selectedTab, enterprise);
         dataSelectable = new MsqlDataSelectableImpl(enterprise);
@@ -43,19 +43,20 @@ public class RunExportAction extends AbstractAction {
 
     public void action(ActionEvent e) {
         sourceXLS = SetupApplication.getInstance().itemXsl();
+        outputDirectoryXML = SetupApplication.getInstance().pathOutXml();
         if (control.getText().contains("Экспорт изделий")) {
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
 
 
             CompletableFuture.supplyAsync(() -> tableView.getItems().stream().map(s -> s.getItem()).collect(Collectors.toList()))
-                    .thenApplyAsync(s -> dataSelectable.selectItems(s.toArray(new String[]{})))
-                    .thenApplyAsync(s -> s.stream().map(i -> {
+                    .thenApply(s -> dataSelectable.selectItems(s.toArray(new String[]{})))
+                    .thenApply(s -> s.stream().map(i -> {
                         ItemsXML itemsXML = new ItemsXML(String.valueOf(System.nanoTime()));
                         itemsXML.getItm().add(new ItemsXML.ItemXML(i.getSite(), i.getItem(), i.getDescription(),
                                 i.getRusDescription(), i.getCodeSync(), i.getTax(), i.getProductCode(), i.getComment()));
                         return itemsXML;
                     }).collect(Collectors.toList()))
-                    .whenComplete(this::createItemXML)
+                    .whenCompleteAsync(this::createItemXML)
                     .whenComplete(this::deleteItemFromView);
 
           /*
@@ -167,7 +168,9 @@ public class RunExportAction extends AbstractAction {
                 marshaller.marshal(item,writer);
                 StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
 
-                StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(String.format("d:/001/1/%10s_item_1c.xml",item.getSeq())), Charset.forName("windows-1251")));
+                StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectoryXML.toString(),
+                                                                                                             String.format("%10s_item_1c.xml",item.getSeq())).toFile()),
+                                                                                                   Charset.forName("windows-1251")));
                 transformer.transform(xmlsource,output);
                 output.getWriter().close();
 

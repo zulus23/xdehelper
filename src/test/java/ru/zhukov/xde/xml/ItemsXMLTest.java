@@ -1,10 +1,7 @@
 package ru.zhukov.xde.xml;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import org.junit.Before;
 import org.junit.Test;
-
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -12,13 +9,13 @@ import javax.xml.bind.Marshaller;
 import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.nio.charset.Charset;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
-import static  org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 /**
  * Created by Gukov on 31.05.2017.
  */

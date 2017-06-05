@@ -20,14 +20,21 @@ import static org.junit.Assert.*;
 
 public class TestSetupFile {
     private static Path setupPath = Paths.get(".").toAbsolutePath().resolve("setup/setup.properties").normalize();
+    private SetupApplication  setupApplication;
+
+    @Before
+    public void setUp(){
+        setupApplication = SetupApplication.getInstance();
+    }
+
 
     @Test
     public void canReadItemXSLPath(){
-        assertTrue(SetupApplication.getInstance().itemXsl().equals(Paths.get("//srv-slaps//InterfaceSL_1C//XSL/sl8_1C8_Item_30.xsl")));
+        assertTrue(setupApplication.itemXsl().equals(Paths.get("//srv-slaps//InterfaceSL_1C//XSL/sl8_1C8_Item_30.xsl")));
     }
     @Test
     public void canReadOutXMLPath(){
-        assertTrue(SetupApplication.getInstance().pathOutXml().equals(Paths.get("//srv-slaps//InterfaceSL_1C//OUT")));
+        assertTrue(setupApplication.pathOutXml().equals(Paths.get("//srv-slaps//InterfaceSL_1C//OUT")));
     }
     @After
     public  void tearDown(){

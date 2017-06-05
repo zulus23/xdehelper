@@ -16,7 +16,7 @@ public class TestDomain {
 
     @Test
     public  void listEnterpriseCountMustBeSix(){
-        assertEquals(6, Databases.availableDatabases().size());
+        assertEquals(5, Databases.availableDatabases().size());
     }
 
 }

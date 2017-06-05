@@ -1,6 +1,7 @@
 package ru.zhukov.xde.db;
 
 import org.junit.Test;
+import ru.zhukov.xde.domain.Customer;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.domain.Item;
 import ru.zhukov.xde.util.Databases;
@@ -14,6 +15,9 @@ import static org.junit.Assert.*;
  */
 
 public class TestConnectToDB {
+
+
+
 
     @Test
     public void connetToEnterprisePOLYPACK(){
@@ -29,5 +33,21 @@ public class TestConnectToDB {
 
 
     }
+
+    @Test
+    public void selectCustomer(){
+        Enterprise enterprise = Databases.availableDatabases().get("ПРИНТ");
+        assertNotNull(enterprise);
+        DataSelectable dataSelectable = new MsqlDataSelectableImpl(enterprise);
+        assertNotNull(dataSelectable)       ;
+        List<Customer> list =  dataSelectable.selectCustomers("K011806");
+        assertEquals(list.size(),1);
+
+    }
+
+
+
+
+
 
 }

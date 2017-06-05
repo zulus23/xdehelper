@@ -58,9 +58,9 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         String selectNumberCustomer = collectNameForSelect(items);
         String sqlSelectCustomer = String.format("SELECT '%s',c.cust_num,c.name,c.RUSExtName,c.RUSinn,c.RUSkpp," +
                                          " dbo.GTKFormatAddress(c.cust_num,0,'custaddr') as address,c.RUSokpo,c.zip,ISNULL(co.Uf_RUS_CountryCode,643)"+
-                                         " FROM dbo.custaddr c join ON c.cust_num = up.cust_num"+
-                                         " LEFT JOIN dbo.country co ON c.country = co.country"+
-                                         "WHERE c.cust_seq = 0 and c.cus_num in(%s)",enterprise.getDbConnect().getNameDatabase(),selectNumberCustomer);
+                                         " FROM dbo.custaddr c "+
+                                         " LEFT JOIN dbo.country co ON c.country = co.country "+
+                                         " WHERE c.cust_seq = 0 and c.cust_num in (%s)",enterprise.getDbConnect().getNameDatabase(),selectNumberCustomer);
         try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlSelectCustomer);) {
@@ -89,10 +89,10 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
             customer.setOkpo(resultSet.getString(8));
             customer.setZip(resultSet.getString(9));
             customer.setCountryCode(resultSet.getString(10));
-
+          customers.add(customer);
         }
 
-        return null;
+        return customers;
     }
 
     @Override

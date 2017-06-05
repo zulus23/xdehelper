@@ -57,7 +57,7 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
     public List<Customer> selectCustomers(String... items) {
         String selectNumberCustomer = collectNameForSelect(items);
         String sqlSelectCustomer = String.format("SELECT '%s',c.cust_num,c.name,c.RUSExtName,c.RUSinn,c.RUSkpp," +
-                                         " dbo.GTKFormatAddress(c.cust_num,0,'custaddr') as address,rowId,c.RUSokpo,c.zip,ISNULL(co.Uf_RUS_CountryCode,643)"+
+                                         " dbo.GTKFormatAddress(c.cust_num,0,'custaddr') as address,c.RUSokpo,c.zip,ISNULL(co.Uf_RUS_CountryCode,643)"+
                                          " FROM dbo.custaddr c join ON c.cust_num = up.cust_num"+
                                          " LEFT JOIN dbo.country co ON c.country = co.country"+
                                          "WHERE c.cust_seq = 0 and c.cus_num in(%s)",enterprise.getDbConnect().getNameDatabase(),selectNumberCustomer);
@@ -78,6 +78,17 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
     private List<Customer> createListCustomer(ResultSet resultSet) throws SQLException {
         List<Customer> customers = new ArrayList<>();
         while(resultSet.next()){
+            Customer customer = new Customer();
+            customer.setSite(resultSet.getString(1));
+            customer.setCustNum(resultSet.getString(2));
+            customer.setName(resultSet.getString(3));
+            customer.setFullName(resultSet.getString(4));
+            customer.setInn(resultSet.getString(5));
+            customer.setKpp(resultSet.getString(6));
+            customer.setAddress(resultSet.getString(7));
+            customer.setOkpo(resultSet.getString(8));
+            customer.setZip(resultSet.getString(9));
+            customer.setCountryCode(resultSet.getString(10));
 
         }
 

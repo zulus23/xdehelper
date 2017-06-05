@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(of = "custName")
 public class Customer {
 
+    private String site;
     private String custNum;
     private String inn;
     private String kpp;
@@ -18,5 +19,6 @@ public class Customer {
     private String countryCode;
     private String okpo;
     private String address;
+    private String zip;
 
 }

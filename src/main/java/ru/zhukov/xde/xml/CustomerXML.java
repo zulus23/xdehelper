@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Created by Gukov on 05.06.2017.
+ * cust_1С_gotek  - characte C is russian
  */
 @XmlRootElement(name = "cust_1С_gotek")
 @XmlAccessorType(XmlAccessType.FIELD)

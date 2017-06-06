@@ -21,18 +21,11 @@ import java.util.StringTokenizer;
 /**
  * Created by Gukov on 29.05.2017.
  */
-public class XDEImportItemController extends AbstractController implements Initializable{
+public class XDEImportItemController extends AbstractController {
 
-    @FXML
-    private TableView itemView;
     @FXML
     private TableColumn columnItem;
 
-    private ContextMenu contextMenu;
-
-    private MenuItem insertMenuItem;
-    private MenuItem clearMenuItem;
-    private Clipboard clipboard;
 
     public  XDEImportItemController(Enterprise enterprise){
       super(enterprise);
@@ -40,31 +33,17 @@ public class XDEImportItemController extends AbstractController implements Initi
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        clipboard = Clipboard.getSystemClipboard();
-        contextMenu = new ContextMenu();
-        insertMenuItem = new MenuItem("Вставить");
-        EventStreams.ticks(Duration.ofMillis(200)).subscribe((tick -> {
-            insertMenuItem.disableProperty().setValue(Objects.isNull(clipboard.getString()));
-        }));
-
-        insertMenuItem.setOnAction(this::pasteItem);
-        clearMenuItem = new MenuItem("Очистить");
-        clearMenuItem.disableProperty().bind(Bindings.isEmpty(itemView.getItems()));
-        clearMenuItem.setOnAction(e -> {
-            itemView.getItems().clear();
-        });
-        contextMenu.getItems().addAll(insertMenuItem, clearMenuItem);
-        itemView.setContextMenu(contextMenu);
-    }
+        super.initialize(location,resources);
+  }
 
 
-
-    private void pasteItem(ActionEvent e){
-        StringTokenizer tokenizer = new StringTokenizer(clipboard.getString());
-        itemView.getItems().clear();
+    @Override
+    protected void pasteItem(ActionEvent e){
+        StringTokenizer tokenizer = new StringTokenizer(super.getClipboard().getString());
+        super.getItemView().getItems().clear();
         while (tokenizer.hasMoreTokens()){
 
-            itemView.getItems().add( new ItemClipBoard(tokenizer.nextToken()));
+            super.getItemView().getItems().add( new ItemClipBoard(tokenizer.nextToken()));
         }
     }
 

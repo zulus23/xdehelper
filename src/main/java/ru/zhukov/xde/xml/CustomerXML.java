@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Gukov on 05.06.2017.
  */
-@XmlRootElement(name = "cust_1c_gotek")
+@XmlRootElement(name = "cust_1С_gotek")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CustomerXML {
     @XmlAttribute(name = "seq")
@@ -15,6 +15,101 @@ public class CustomerXML {
     private  String action;
 
     private CustXML cust;
+
+    @XmlRootElement(name = "cust")
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class CustXML {
+        @XmlAttribute(name = "cust_num")
+        private String custNum;
+        @XmlAttribute(name = "LineSeq")
+        private String linSeq;
+        @XmlAttribute(name = "RUSinn")
+        private String inn;
+        @XmlAttribute(name = "RUSkpp")
+        private String kpp;
+        @XmlAttribute(name = "name")
+        private String name;
+        @XmlAttribute(name = "RUSExtName")
+        private String fullName;
+        @XmlAttribute(name = "Uf_RUS_CountryCode")
+        private String countryCode;
+        @XmlAttribute(name = "RUSokpo")
+        private String okpo;
+        @XmlAttribute(name = "AddrFull")
+        private String addressFull;
+
+        public String getLinSeq() {
+            return linSeq;
+        }
+
+        public void setLinSeq(String linSeq) {
+            this.linSeq = linSeq;
+        }
+
+        public String getInn() {
+            return inn;
+        }
+
+        public void setInn(String inn) {
+            this.inn = inn;
+        }
+
+        public String getKpp() {
+            return kpp;
+        }
+
+        public void setKpp(String kpp) {
+            this.kpp = kpp;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public void setFullName(String fullName) {
+            this.fullName = fullName;
+        }
+
+        public String getCountryCode() {
+            return countryCode;
+        }
+
+        public void setCountryCode(String countryCode) {
+            this.countryCode = countryCode;
+        }
+
+        public String getOkpo() {
+            return okpo;
+        }
+
+        public void setOkpo(String okpo) {
+            this.okpo = okpo;
+        }
+
+        public String getAddressFull() {
+            return addressFull;
+        }
+
+        public void setAddressFull(String addressFull) {
+            this.addressFull = addressFull;
+        }
+
+    public String getCustNum() {
+        return custNum;
+    }
+
+    public void setCustNum(String custNum) {
+        this.custNum = custNum;
+    }
+}
 
 
     public String getSeq() {
@@ -41,6 +136,7 @@ public class CustomerXML {
         this.cust = cust;
     }
 }
+/*
 @XmlRootElement(name = "cust")
 @XmlAccessorType(XmlAccessType.FIELD)
  class CustXML {
@@ -124,4 +220,4 @@ public class CustomerXML {
     public void setAddressFull(String addressFull) {
         this.addressFull = addressFull;
     }
-}
+}*/

@@ -11,9 +11,7 @@ import javax.xml.transform.*;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -31,10 +29,11 @@ public class CustomerXMLTest {
         customerXML = new CustomerXML();
         customerXML.setAction("C");
         customerXML.setSeq("1");
-        CustXML custXML = new CustXML();
+
+        CustomerXML.CustXML custXML = new CustomerXML.CustXML();
         custXML.setInn("1111");
         custXML.setKpp("1111");
-
+        custXML.setCustNum("1111");
         customerXML.setCust(custXML);
 
     }
@@ -50,7 +49,7 @@ public class CustomerXMLTest {
 
         try {
             StringWriter writer = new StringWriter();
-            JAXBContext jaxbContext = JAXBContext.newInstance(CustomerXML.class,CustXML.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(CustomerXML.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
             marshaller.marshal(customerXML,writer);
@@ -71,7 +70,7 @@ public class CustomerXMLTest {
 
         try {
             StringWriter writer = new StringWriter();
-            JAXBContext jaxbContext = JAXBContext.newInstance(CustomerXML.class,CustXML.class);
+            JAXBContext jaxbContext = JAXBContext.newInstance(CustomerXML.class);
             Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
             marshaller.marshal(customerXML,writer);
@@ -82,10 +81,11 @@ public class CustomerXMLTest {
             transformer.setOutputProperty(OutputKeys.INDENT,"yes");
 
             StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
+           // StreamSource xmlsource = new StreamSource(new FileInputStream(Paths.get("d://001/CustomerT.xml").toFile()));
             Writer xml = new StringWriter();
             StreamResult output = new StreamResult(xml);
             transformer.transform(xmlsource,output);
-            assertTrue(output.getWriter().toString().contains("windows-1251"));
+            assertTrue(output.getWriter().toString().contains("Справочник"));
 
 
         } catch (JAXBException e) {

@@ -1,6 +1,8 @@
 package ru.zhukov.xde.action;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import ru.zhukov.xde.db.DataSelectable;
@@ -9,7 +11,9 @@ import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.domain.Item;
 import ru.zhukov.xde.util.FXUtils;
 import ru.zhukov.xde.util.ItemClipBoard;
+import ru.zhukov.xde.util.PartnerClipBoard;
 import ru.zhukov.xde.util.SetupApplication;
+import ru.zhukov.xde.xml.CustomerXML;
 import ru.zhukov.xde.xml.ItemsXML;
 
 import javax.xml.bind.JAXBContext;
@@ -42,9 +46,10 @@ public class RunExportAction extends AbstractAction {
 
 
     public void action(ActionEvent e) {
-        sourceXLS = SetupApplication.getInstance().itemXsl();
+
         outputDirectoryXML = SetupApplication.getInstance().pathOutXml();
         if (control.getText().contains("Экспорт изделий")) {
+            sourceXLS = SetupApplication.getInstance().itemXsl();
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
 
 
@@ -59,84 +64,75 @@ public class RunExportAction extends AbstractAction {
                     .whenCompleteAsync(this::createItemXML)
                     .whenComplete(this::deleteItemFromView);
 
-          /*
-            List<String> strings = tableView.getItems().stream().map(s -> s.getItem()).collect(Collectors.toList());
 
+        }
+        if (control.getText().contains("Экспорт контрагентов")) {
+            TableView<PartnerClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
+            RadioButton customerSelected = FXUtils.getChildByID(control.getTabPane(), "rbCustomer");
+            if(customerSelected.isSelected()){
+                sourceXLS = SetupApplication.getInstance().customerXsl();
+                CompletableFuture.supplyAsync(()-> tableView.getItems().stream().map(i -> i.getPartner()).collect(Collectors.toList()))
+                                 .thenApply(i -> dataSelectable.selectCustomers(i.toArray(new String[]{})))
+                                 .thenApply(customer -> customer.stream()
+                                                                .map(i -> {
+                                                                            CustomerXML customerXML = new CustomerXML();
+                                                                                        customerXML.setSeq(String.valueOf(System.nanoTime()));
+                                                                                        customerXML.setAction("C");
+                                                                             CustomerXML.CustXML custXML = new CustomerXML.CustXML();
+                                                                             custXML.setCustNum(i.getCustNum());
+                                                                             custXML.setInn(i.getInn());
+                                                                             custXML.setKpp(i.getKpp());
+                                                                             custXML.setAddressFull(i.getAddress());
+                                                                             custXML.setCountryCode(i.getCountryCode());
+                                                                             custXML.setFullName(i.getFullName());
+                                                                             custXML.setName(i.getName());
+                                                                             custXML.setOkpo(i.getOkpo());
+                                                                             custXML.setLinSeq("");
+                                                                             customerXML.setCust(custXML);
+                                                                            return customerXML;
+                                                                           })
+                                                                .collect(Collectors.toList()))
+                                 .whenComplete(this::createCustomerXML);
 
-
-
-            List<Item> itemList =  dataSelectable.selectItems(strings.toArray(new String[]{}));
-
-
-
-
-            List<ItemsXML>  itemsXMLS =  itemList.stream().map(i ->{
-                ItemsXML itemsXML = new ItemsXML(String.valueOf(System.nanoTime()));
-                itemsXML.getItm().add(new ItemsXML.ItemXML(i.getSite(),i.getItem(),i.getDescription(),
-                                                           i.getRusDescription(),i.getCodeSync(),i.getTax(),i.getProductCode(),i.getComment()));
-                return itemsXML;
-            }).collect(Collectors.toList());
-
-            try {
-                StringWriter writer = new StringWriter();
-                JAXBContext jaxbContext = JAXBContext.newInstance(ItemsXML.class);
-                Marshaller marshaller = jaxbContext.createMarshaller();
-                marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-                TransformerFactory factory = TransformerFactory.newInstance();
-                Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
-                transformer.setOutputProperty(OutputKeys.ENCODING,"windows-1251");
-                transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-                Writer xml = new StringWriter();
-                for (ItemsXML item:itemsXMLS) {
-                    writer.getBuffer().setLength(0);
-                    marshaller.marshal(item,writer);
-                     StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
-
-                    StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(String.format("d:/001/1/%10s_item_1c.xml",item.getSeq())), Charset.forName("windows-1251")));
-                    transformer.transform(xmlsource,output);
-                    output.getWriter().close();
-
-
-                }
-
-
-            }catch (Exception ex){
 
             }
-        }*/
-            /*
-            for (ItemsXML item:itemsXMLS) {
 
-
-
-
-                try {
-
-                    marshaller.marshal(item,writer);
-                    TransformerFactory factory = TransformerFactory.newInstance();
-                    Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
-                    transformer.setOutputProperty(OutputKeys.ENCODING,"windows-1251");
-                    transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-                    StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
-                    Writer xml = new StringWriter();
-                    StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(String.format("d:/001/1/%10s_item_1c.xml",item.getSeq())), Charset.forName("windows-1251")));
-                    transformer.transform(xmlsource,output);
-                     output.getWriter().close();
-                } catch (JAXBException e1) {
-                    e1.printStackTrace();
-                } catch (TransformerConfigurationException e1) {
-                    e1.printStackTrace();
-                } catch (TransformerException e1) {
-                    e1.printStackTrace();
-                } catch (FileNotFoundException e1) {
-                    e1.printStackTrace();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-
-*/
         }
     }
+
+    private void createCustomerXML(List<CustomerXML> customerXMLS, Throwable throwable) {
+        try {
+            StringWriter writer = new StringWriter();
+            JAXBContext jaxbContext = JAXBContext.newInstance(CustomerXML.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
+            transformer.setOutputProperty(OutputKeys.ENCODING,"windows-1251");
+            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
+            Writer xml = new StringWriter();
+            for (CustomerXML item:customerXMLS) {
+                writer.getBuffer().setLength(0);
+                marshaller.marshal(item,writer);
+                StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
+
+                StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectoryXML.toString(),
+                        String.format("%10s_cust_1c_gotek.xml",item.getSeq())).toFile()),
+                        Charset.forName("windows-1251")));
+                transformer.transform(xmlsource,output);
+                output.getWriter().close();
+
+
+            }
+
+
+        }catch (Exception ex){
+
+        }
+    }
+
+
+
     private void deleteItemFromView(List<ItemsXML> itemsXMLS, Throwable throwable) {
         TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
         itemsXMLS. stream().forEach(e -> { findItem(tableView, e);
@@ -145,11 +141,10 @@ public class RunExportAction extends AbstractAction {
     }
 
     private void findItem(TableView<ItemClipBoard> tableView, ItemsXML e) {
-        tableView.getItems()
-                                                  .stream()
-                                                  .filter(i-> i.getItem().equals(e.getItm().get(0).getItem()))
-                                                  .findFirst()
-                                                  .ifPresent(i -> tableView.getItems().remove(i));
+        tableView.getItems().stream()
+                            .filter(i-> i.getItem().equals(e.getItm().get(0).getItem()))
+                            .findFirst()
+                            .ifPresent(i -> tableView.getItems().remove(i));
     }
 
     private void createItemXML(List<ItemsXML> itemsXMLS, Throwable throwable) {

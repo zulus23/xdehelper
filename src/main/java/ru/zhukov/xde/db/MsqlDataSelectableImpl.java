@@ -118,6 +118,47 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         return null;
     }
 
+    @Override
+    public List<VendorLcr> selectVendorLcr(String... items) {
+        String whereString = Arrays.asList(items).stream().map(e -> {
+            String[] temp=  e.split("\\=");
+            return  String.format("(v.vend_num = '%s' AND l.vend_lcr_num='%s') OR ",temp[0],temp[1]);
+        }).collect(Collectors.joining());
+
+        String sqlSelectLcrVendor = String.format("SELECT '%s',l.vend_lcr_num,v.RUSinn, v.RUSkpp,l.issue_date,v.vend_num,l.curr_code\n" +
+                "FROM dbo.vend_lcr l\n" +
+                "JOIN dbo.vendaddr v ON v.vend_num = l.vend_num\n" +
+                "WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),whereString);
+        try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlSelectLcrVendor);) {
+
+            return createListLcrVendor(resultSet);
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        };
+        return null;
+
+    }
+
+    private List<VendorLcr> createListLcrVendor(ResultSet resultSet) throws SQLException{
+        List<VendorLcr> vendorLcrs = new ArrayList<>();
+        while(resultSet.next()){
+            VendorLcr vendorLcr = new VendorLcr();
+            vendorLcr.setSite(resultSet.getString(1));
+            vendorLcr.setLcrNum(resultSet.getString(2));
+            vendorLcr.setInn(resultSet.getString(3));
+            vendorLcr.setKpp(resultSet.getString(4));
+            vendorLcr.setDate(resultSet.getString(5));
+            vendorLcr.setVendNum(resultSet.getString(6));
+            vendorLcr.setCurrentCode(resultSet.getString(7));
+            vendorLcrs.add(vendorLcr);
+        }
+        return vendorLcrs;
+    }
+
     private List<Vendor> createListVendor(ResultSet resultSet) throws  SQLException{
         List<Vendor> vendors = new ArrayList<>();
         while(resultSet.next()){

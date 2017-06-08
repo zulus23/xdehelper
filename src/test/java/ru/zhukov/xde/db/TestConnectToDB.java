@@ -1,10 +1,7 @@
 package ru.zhukov.xde.db;
 
 import org.junit.Test;
-import ru.zhukov.xde.domain.Customer;
-import ru.zhukov.xde.domain.Enterprise;
-import ru.zhukov.xde.domain.Item;
-import ru.zhukov.xde.domain.Vendor;
+import ru.zhukov.xde.domain.*;
 import ru.zhukov.xde.util.Databases;
 
 import java.util.List;
@@ -55,7 +52,17 @@ public class TestConnectToDB {
         assertEquals(list.size(),1);
         assertEquals("П001787",list.get(0).getVendNum());
     }
-
+    @Test
+    public void selectVendorLcrForBasePolypack(){
+        Enterprise enterprise = Databases.availableDatabases().get("ПОЛИПАК");
+        assertNotNull(enterprise);
+        DataSelectable dataSelectable = new MsqlDataSelectableImpl(enterprise);
+        assertNotNull(dataSelectable)       ;
+        List<VendorLcr> list =  dataSelectable.selectVendorLcr("П001787=БЕЗ ДОГОВОРА");
+        assertEquals(list.size(),1);
+        assertEquals("П001787",list.get(0).getVendNum());
+        assertEquals("БЕЗ ДОГОВОРА",list.get(0).getLcrNum());
+    }
 
 
 

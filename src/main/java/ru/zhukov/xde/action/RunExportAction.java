@@ -63,10 +63,11 @@ public class RunExportAction extends AbstractAction {
             /*Обработка клиентов*/
             if(customerSelected.isSelected()){
 
-                if(withLcrSelected.isSelected() | withOutLcrSelected.isSelected())
+                if(withLcrSelected.isSelected() | withOutLcrSelected.isSelected()) {
                     new CreateXMLForCustomer(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
-                                            .run();
-                                        //.whenComplete(this::deleteCustomerFromView);
+                            .run();
+                    //.whenComplete(this::deleteCustomerFromView);
+                }
                 if (withLcrSelected.isSelected() | onlyLcrSelected.isSelected()  ){
                     new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
                 }
@@ -74,7 +75,15 @@ public class RunExportAction extends AbstractAction {
 
             }
             if(vendorSelected.isSelected()){
+                if(withLcrSelected.isSelected() | withOutLcrSelected.isSelected()) {
+                    new CreateXMLForVendor(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
+                            .run();
+                    //.whenComplete(this::deleteCustomerFromView);
+                }
+                if (withLcrSelected.isSelected() | onlyLcrSelected.isSelected()  ){
+                 //   new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
 
+                }
             }
 
 

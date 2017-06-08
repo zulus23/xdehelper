@@ -33,6 +33,12 @@ mainClassName="ru.zhukov.xde.BootstrapApplication"
 
 sourceCompatibility = 1.8
 
+
+jar{
+    manifest{
+        attributes 'Main-Class' :'ru.zhukov.xde.BootstrapApplication'
+    }
+}
 tasks.withType(JavaCompiler) {
     encoding = 'UTF-8'
 }
@@ -44,7 +50,7 @@ repositories {
 
 dependencies {
     compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.1.0.jre8'
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.16.16'
     compile group: 'org.reactfx', name: 'reactfx', version: '1.4.1'
     compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.12'
 

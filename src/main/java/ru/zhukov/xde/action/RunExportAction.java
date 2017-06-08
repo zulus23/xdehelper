@@ -81,7 +81,7 @@ public class RunExportAction extends AbstractAction {
                     //.whenComplete(this::deleteCustomerFromView);
                 }
                 if (withLcrSelected.isSelected() | onlyLcrSelected.isSelected()  ){
-                 //   new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
+                    new CreateXMLForLcrVendor(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
 
                 }
             }

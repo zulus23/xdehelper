@@ -63,6 +63,8 @@ public class SetupApplication {
                     properties.setProperty("outXml","//srv-slaps/InterfaceSL_1C/Out");
                     properties.setProperty("customerLcrXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_CustLcr_30.xsl");
                     properties.setProperty("customerXsl","//srv-slaps/InterfaceSL_1C/XSL/Cust.xsl");
+                    properties.setProperty("vendorLcrXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_VendLcr_30.xsl");
+                    properties.setProperty("vendorXsl","//srv-slaps/InterfaceSL_1C/XSL/Vend.xsl");
                     try(OutputStream output = Files.newOutputStream(setupPath)){
                         properties.store(output,"");
                     }
@@ -116,4 +118,8 @@ public class SetupApplication {
     public Path customerLcrXsl() {
         return Paths.get(properties.getProperty("customerLcrXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_CustLcr_30.xsl"));
     }
+    public Path vendorLcrXsl() {
+        return Paths.get(properties.getProperty("vendorLcrXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_VendLcr_30.xsl"));
+    }
+
 }

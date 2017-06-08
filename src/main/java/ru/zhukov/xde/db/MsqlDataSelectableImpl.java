@@ -1,9 +1,6 @@
 package ru.zhukov.xde.db;
 
-import ru.zhukov.xde.domain.Customer;
-import ru.zhukov.xde.domain.Enterprise;
-import ru.zhukov.xde.domain.Item;
-import ru.zhukov.xde.domain.Vendor;
+import ru.zhukov.xde.domain.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -75,6 +72,47 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         return null;
     }
 
+    @Override
+    public List<CustomerLcr> selectCustomerLcr(String... items) {
+        String whereString = Arrays.asList(items).stream().map(e -> {
+           String[] temp=  e.split("\\=");
+           return  String.format("(c.cust_num = '%s' AND l.lcr_num='%s') OR ",temp[0],temp[1]);
+        }).collect(Collectors.joining());
+
+        String sqlSelectLcrCustomer = String.format("SELECT '%s',l.lcr_num,c.RUSinn, c.RUSkpp,l.issue_date,c.cust_num,l.curr_code\n" +
+                                      "FROM dbo.cust_lcr l\n" +
+                                      "JOIN dbo.custaddr c ON c.cust_num = l.cust_num\n" +
+                                      "WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),whereString);
+        try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlSelectLcrCustomer);) {
+
+            return createListLcrCustomer(resultSet);
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        };
+        return null;
+    }
+
+    private List<CustomerLcr> createListLcrCustomer(ResultSet resultSet) throws SQLException {
+        List<CustomerLcr> customerLcrs = new ArrayList<>();
+        while(resultSet.next()){
+            CustomerLcr customerLcr = new CustomerLcr();
+            customerLcr.setSite(resultSet.getString(1));
+            customerLcr.setLcrNum(resultSet.getString(2));
+            customerLcr.setInn(resultSet.getString(3));
+            customerLcr.setKpp(resultSet.getString(4));
+            customerLcr.setDate(resultSet.getString(5));
+            customerLcr.setCustNum(resultSet.getString(6));
+            customerLcr.setCurrentCode(resultSet.getString(7));
+            customerLcrs.add(customerLcr);
+        }
+        return customerLcrs;
+    }
+
+
     private List<Customer> createListCustomer(ResultSet resultSet) throws SQLException {
         List<Customer> customers = new ArrayList<>();
         while(resultSet.next()){
@@ -99,6 +137,8 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
     public List<Vendor> selectVendors(String... items) {
         return null;
     }
+
+
 
     private List<Item> createListItem(ResultSet resultSet) throws SQLException {
         List<Item> items = new ArrayList<>();

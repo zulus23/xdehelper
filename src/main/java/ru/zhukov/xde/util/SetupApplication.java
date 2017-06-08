@@ -59,8 +59,10 @@ public class SetupApplication {
 
                     Files.createFile(setupPath);
                     Properties properties = new Properties();
-                    properties.setProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/sl8_1C8_Item_30.xsl");
-                    properties.setProperty("outXml","//srv-slaps//InterfaceSL_1C//Out");
+                    properties.setProperty("itemXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_Item_30.xsl");
+                    properties.setProperty("outXml","//srv-slaps/InterfaceSL_1C/Out");
+                    properties.setProperty("customerLcrXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_CustLcr_30.xsl");
+                    properties.setProperty("customerXsl","//srv-slaps/InterfaceSL_1C/XSL/Cust.xsl");
                     try(OutputStream output = Files.newOutputStream(setupPath)){
                         properties.store(output,"");
                     }
@@ -91,33 +93,27 @@ public class SetupApplication {
     }
     public  Path itemXsl(){
                //properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
-       return Paths.get(properties.getProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/sl8_1C8_Item_30.xsl"));
+       return Paths.get(properties.getProperty("itemXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_Item_30.xsl"));
 
     }
     public  Path customerXsl(){
         //properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
-        return Paths.get(properties.getProperty("customerXsl","//srv-slaps//InterfaceSL_1C//XSL/Cust.xsl"));
+        return Paths.get(properties.getProperty("customerXsl","//srv-slaps/InterfaceSL_1C/XSL/Cust.xsl"));
 
     }
     public  Path vendorXsl(){
         //properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
-        return Paths.get(properties.getProperty("itemXsl","//srv-slaps//InterfaceSL_1C//XSL/Vend.xsl"));
+        return Paths.get(properties.getProperty("itemXsl","//srv-slaps/InterfaceSL_1C/XSL/Vend.xsl"));
 
     }
 
 
     public Path pathOutXml(){
-       return Paths.get(properties.getProperty("outXml","//srv-slaps//InterfaceSL_1C//Out"));
+       return Paths.get(properties.getProperty("outXml","//srv-slaps/InterfaceSL_1C/Out"));
      }
 
 
-
-
-
-
-
-
-
-
-
+    public Path customerLcrXsl() {
+        return Paths.get(properties.getProperty("customerLcrXsl","//srv-slaps/InterfaceSL_1C/XSL/sl8_1C8_CustLcr_30.xsl"));
+    }
 }

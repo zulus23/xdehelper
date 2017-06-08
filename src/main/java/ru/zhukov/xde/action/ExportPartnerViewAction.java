@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.ui.XDEImportItemController;
 import ru.zhukov.xde.ui.XDEImportPartnerController;
-import sun.plugin.dom.views.AbstractView;
+
 
 import java.io.IOException;
 

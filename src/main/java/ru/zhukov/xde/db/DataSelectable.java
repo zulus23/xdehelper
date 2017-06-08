@@ -1,6 +1,7 @@
 package ru.zhukov.xde.db;
 
 import ru.zhukov.xde.domain.Customer;
+import ru.zhukov.xde.domain.CustomerLcr;
 import ru.zhukov.xde.domain.Item;
 import ru.zhukov.xde.domain.Vendor;
 
@@ -14,6 +15,8 @@ public interface DataSelectable {
     List<Item>  selectItems(String... items);
     List<Customer>  selectCustomers(String... items);
     List<Vendor>  selectVendors(String... items);
+    List<CustomerLcr>  selectCustomerLcr(String... items);
+
 
 
 }

@@ -32,7 +32,11 @@ public class XDEImportPartnerController extends AbstractController/* implements 
     @FXML
     private RadioButton rbVendor;
     @FXML
-    private CheckBox chLcr;
+    private RadioButton rbLcr;
+
+
+    @FXML
+    private CheckBox chWithLcr;
 
     public XDEImportPartnerController(Enterprise enterprise){
       super(enterprise);
@@ -40,7 +44,15 @@ public class XDEImportPartnerController extends AbstractController/* implements 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         super.initialize(location,resources);
+        chWithLcr.disableProperty().bind(Bindings.selectBoolean(rbLcr.selectedProperty()));
+        chWithLcr.disableProperty().addListener((e)->{
+            if (chWithLcr.isDisable()){
+                chWithLcr.setSelected(false);
+            }
+        });
+
     }
 
 
@@ -50,16 +62,16 @@ public class XDEImportPartnerController extends AbstractController/* implements 
         StringTokenizer tokenizer = new StringTokenizer(super.getClipboard().getString());
 
         super.getItemView().getItems().clear();
-        if(chLcr.isSelected()){
+        if(chWithLcr.isSelected()){
             while (tokenizerPartnerLcr.hasMoreTokens()) {
                 String partner = null;
                 String lcr = null;
-                tokenizer = new StringTokenizer(tokenizerPartnerLcr.nextToken());
-                if(tokenizer.countTokens() == 2){
-                  partner = tokenizer.nextToken().trim();
-                  lcr = tokenizer.nextToken().trim();
+                String[] st = tokenizerPartnerLcr.nextToken().split("\\t+");
+                if(st.length == 2){
+                  partner = st[0].trim();
+                  lcr = st[1].trim();
                 } else {
-                    partner = tokenizer.nextToken().trim();
+                    partner = st[0].trim();
                 }
 
                super.getItemView().getItems().add(new PartnerClipBoard(partner,lcr));

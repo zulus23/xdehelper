@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
  * Created by Gukov on 05.06.2017.
  */
 @Data
-@EqualsAndHashCode(of = "custName")
+@EqualsAndHashCode(of = "custNum")
 public class Customer {
 
     private String site;

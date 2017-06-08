@@ -9,10 +9,7 @@ import ru.zhukov.xde.db.DataSelectable;
 import ru.zhukov.xde.db.MsqlDataSelectableImpl;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.domain.Item;
-import ru.zhukov.xde.util.FXUtils;
-import ru.zhukov.xde.util.ItemClipBoard;
-import ru.zhukov.xde.util.PartnerClipBoard;
-import ru.zhukov.xde.util.SetupApplication;
+import ru.zhukov.xde.util.*;
 import ru.zhukov.xde.xml.CustomerXML;
 import ru.zhukov.xde.xml.ItemsXML;
 
@@ -51,48 +48,23 @@ public class RunExportAction extends AbstractAction {
         if (control.getText().contains("Экспорт изделий")) {
             sourceXLS = SetupApplication.getInstance().itemXsl();
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
-
-
-            CompletableFuture.supplyAsync(() -> tableView.getItems().stream().map(s -> s.getItem()).collect(Collectors.toList()))
-                    .thenApply(s -> dataSelectable.selectItems(s.toArray(new String[]{})))
-                    .thenApply(s -> s.stream().map(i -> {
-                        ItemsXML itemsXML = new ItemsXML(String.valueOf(System.nanoTime()));
-                        itemsXML.getItm().add(new ItemsXML.ItemXML(i.getSite(), i.getItem(), i.getDescription(),
-                                i.getRusDescription(), i.getCodeSync(), i.getTax(), i.getProductCode(), i.getComment()));
-                        return itemsXML;
-                    }).collect(Collectors.toList()))
-                    .whenCompleteAsync(this::createItemXML)
-                    .whenComplete(this::deleteItemFromView);
-
-
+            List<ItemClipBoard> clipBoards =  tableView.getItems().stream().collect(Collectors.toList());
+              new CreateXMLForItem(clipBoards,dataSelectable)
+                                  .run()
+                                  .whenComplete(this::deleteItemFromView);
         }
         if (control.getText().contains("Экспорт контрагентов")) {
             TableView<PartnerClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
             RadioButton customerSelected = FXUtils.getChildByID(control.getTabPane(), "rbCustomer");
+            CheckBox withLcrSelected = FXUtils.getChildByID(control.getTabPane(), "chWithLcr");
             if(customerSelected.isSelected()){
-                sourceXLS = SetupApplication.getInstance().customerXsl();
-                CompletableFuture.supplyAsync(()-> tableView.getItems().stream().map(i -> i.getPartner()).collect(Collectors.toList()))
-                                 .thenApply(i -> dataSelectable.selectCustomers(i.toArray(new String[]{})))
-                                 .thenApply(customer -> customer.stream()
-                                                                .map(i -> {
-                                                                            CustomerXML customerXML = new CustomerXML();
-                                                                                        customerXML.setSeq(String.valueOf(System.nanoTime()));
-                                                                                        customerXML.setAction("C");
-                                                                             CustomerXML.CustXML custXML = new CustomerXML.CustXML();
-                                                                             custXML.setCustNum(i.getCustNum());
-                                                                             custXML.setInn(i.getInn());
-                                                                             custXML.setKpp(i.getKpp());
-                                                                             custXML.setAddressFull(i.getAddress());
-                                                                             custXML.setCountryCode(i.getCountryCode());
-                                                                             custXML.setFullName(i.getFullName());
-                                                                             custXML.setName(i.getName());
-                                                                             custXML.setOkpo(i.getOkpo());
-                                                                             custXML.setLinSeq("");
-                                                                             customerXML.setCust(custXML);
-                                                                            return customerXML;
-                                                                           })
-                                                                .collect(Collectors.toList()))
-                                 .whenComplete(this::createCustomerXML);
+
+                new CreateXMLForCustomer(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
+                                        .run();
+                                        //.whenComplete(this::deleteCustomerFromView);
+                if (withLcrSelected.isSelected()){
+                    new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
+                }
 
 
             }
@@ -100,35 +72,9 @@ public class RunExportAction extends AbstractAction {
         }
     }
 
-    private void createCustomerXML(List<CustomerXML> customerXMLS, Throwable throwable) {
-        try {
-            StringWriter writer = new StringWriter();
-            JAXBContext jaxbContext = JAXBContext.newInstance(CustomerXML.class);
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
-            transformer.setOutputProperty(OutputKeys.ENCODING,"windows-1251");
-            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-            Writer xml = new StringWriter();
-            for (CustomerXML item:customerXMLS) {
-                writer.getBuffer().setLength(0);
-                marshaller.marshal(item,writer);
-                StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
-
-                StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectoryXML.toString(),
-                        String.format("%10s_cust_1c_gotek.xml",item.getSeq())).toFile()),
-                        Charset.forName("windows-1251")));
-                transformer.transform(xmlsource,output);
-                output.getWriter().close();
-
-
-            }
-
-
-        }catch (Exception ex){
-
-        }
+    private void deleteCustomerFromView(List<CustomerXML> customerXMLS, Throwable throwable) {
+        TableView<PartnerClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
+        tableView.getItems().clear();
     }
 
 
@@ -146,38 +92,6 @@ public class RunExportAction extends AbstractAction {
                             .findFirst()
                             .ifPresent(i -> tableView.getItems().remove(i));
     }
-
-    private void createItemXML(List<ItemsXML> itemsXMLS, Throwable throwable) {
-        try {
-            StringWriter writer = new StringWriter();
-            JAXBContext jaxbContext = JAXBContext.newInstance(ItemsXML.class);
-            Marshaller marshaller = jaxbContext.createMarshaller();
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            TransformerFactory factory = TransformerFactory.newInstance();
-            Transformer transformer =  factory.newTransformer(new StreamSource(sourceXLS.toString()));
-            transformer.setOutputProperty(OutputKeys.ENCODING,"windows-1251");
-            transformer.setOutputProperty(OutputKeys.INDENT,"yes");
-            Writer xml = new StringWriter();
-            for (ItemsXML item:itemsXMLS) {
-                writer.getBuffer().setLength(0);
-                marshaller.marshal(item,writer);
-                StreamSource xmlsource = new StreamSource(new StringReader(writer.toString()));
-
-                StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectoryXML.toString(),
-                                                                                                             String.format("%10s_item_1c.xml",item.getSeq())).toFile()),
-                                                                                                   Charset.forName("windows-1251")));
-                transformer.transform(xmlsource,output);
-                output.getWriter().close();
-
-
-            }
-
-
-        }catch (Exception ex){
-
-        }
-    }
-
 
 }
 

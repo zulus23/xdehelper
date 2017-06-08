@@ -96,6 +96,49 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         return null;
     }
 
+    @Override
+    public List<Vendor> selectVendors(String... items) {
+        String selectNumberVendor = collectNameForSelect(items);
+        String sqlSelectVendor = String.format("SELECT '%s',v.vend_num,v.name,v.RUSExtName,v.RUSinn,v.RUSkpp," +
+                " dbo.GTKFormatAddress(v.vend_num,0,'vendaddr') as address,v.RUSokpo,v.zip,ISNULL(co.Uf_RUS_CountryCode,643)"+
+                " FROM dbo.vendaddr v "+
+                " LEFT JOIN dbo.country co ON v.country = co.country "+
+                " WHERE  v.vend_num in (%s)",enterprise.getDbConnect().getNameDatabase(),selectNumberVendor);
+        try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlSelectVendor);) {
+
+            return createListVendor(resultSet);
+
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        };
+
+        return null;
+    }
+
+    private List<Vendor> createListVendor(ResultSet resultSet) throws  SQLException{
+        List<Vendor> vendors = new ArrayList<>();
+        while(resultSet.next()){
+            Vendor vendor = new Vendor();
+            vendor.setSite(resultSet.getString(1));
+            vendor.setVendNum(resultSet.getString(2));
+            vendor.setName(resultSet.getString(3));
+            vendor.setFullName(resultSet.getString(4));
+            vendor.setInn(resultSet.getString(5));
+            vendor.setKpp(resultSet.getString(6));
+            vendor.setAddress(resultSet.getString(7));
+            vendor.setOkpo(resultSet.getString(8));
+            vendor.setZip(resultSet.getString(9));
+            vendor.setCountryCode(resultSet.getString(10));
+            vendors.add(vendor);
+        }
+
+        return vendors;
+    }
+
+
     private List<CustomerLcr> createListLcrCustomer(ResultSet resultSet) throws SQLException {
         List<CustomerLcr> customerLcrs = new ArrayList<>();
         while(resultSet.next()){
@@ -133,10 +176,7 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         return customers;
     }
 
-    @Override
-    public List<Vendor> selectVendors(String... items) {
-        return null;
-    }
+
 
 
 

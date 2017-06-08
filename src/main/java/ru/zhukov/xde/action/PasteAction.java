@@ -7,6 +7,8 @@ import ru.zhukov.xde.domain.Item;
 import ru.zhukov.xde.util.FXUtils;
 import ru.zhukov.xde.util.ItemClipBoard;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 
@@ -26,15 +28,15 @@ public class PasteAction {
     public void action(ActionEvent e) {
         Clipboard clipboard = Clipboard.getSystemClipboard();
         if( control.getText().contains("Экспорт изделий")){
-
-         TableView tableView =  FXUtils.getChildByID(control.getTabPane(),"itemView");
+            Set<ItemClipBoard> itemClipBoards = new LinkedHashSet<>();
+            TableView tableView =  FXUtils.getChildByID(control.getTabPane(),"itemView");
             StringTokenizer tokenizer = new StringTokenizer(clipboard.getString());
             tableView.getItems().clear();
             while (tokenizer.hasMoreTokens()){
 
-               tableView.getItems().add( new ItemClipBoard(tokenizer.nextToken()));
+               itemClipBoards.add( new ItemClipBoard(tokenizer.nextToken()));
             }
-
+            tableView.getItems().addAll(itemClipBoards);
 
         }
 

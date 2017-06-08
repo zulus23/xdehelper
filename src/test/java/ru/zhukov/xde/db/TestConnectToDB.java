@@ -4,6 +4,7 @@ import org.junit.Test;
 import ru.zhukov.xde.domain.Customer;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.domain.Item;
+import ru.zhukov.xde.domain.Vendor;
 import ru.zhukov.xde.util.Databases;
 
 import java.util.List;
@@ -44,8 +45,16 @@ public class TestConnectToDB {
         assertEquals(list.size(),1);
 
     }
-
-
+    @Test
+    public void selectVendorForBasePolypack(){
+        Enterprise enterprise = Databases.availableDatabases().get("ПОЛИПАК");
+        assertNotNull(enterprise);
+        DataSelectable dataSelectable = new MsqlDataSelectableImpl(enterprise);
+        assertNotNull(dataSelectable)       ;
+        List<Vendor> list =  dataSelectable.selectVendors("П001787");
+        assertEquals(list.size(),1);
+        assertEquals("П001787",list.get(0).getVendNum());
+    }
 
 
 

@@ -19,4 +19,14 @@ public class SetupApplicationTest {
          assertEquals(true,pathCustomerLcrXSL.getName(1).toString().contains("CustLcr"));
 
     }
+
+    @Test
+    public void  canGetPropertyForVendorXSL(){
+        Path pathVendorXSL  =  SetupApplication.getInstance().vendorXsl();
+
+        assertEquals(2,pathVendorXSL.getNameCount());
+        assertEquals(true,pathVendorXSL.getName(1).toString().contains("Vend"));
+
+    }
+
 }

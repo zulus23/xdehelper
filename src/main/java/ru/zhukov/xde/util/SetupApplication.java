@@ -103,7 +103,7 @@ public class SetupApplication {
     }
     public  Path vendorXsl(){
         //properties.load(Files.newInputStream(setupPath,StandardOpenOption.READ));
-        return Paths.get(properties.getProperty("itemXsl","//srv-slaps/InterfaceSL_1C/XSL/Vend.xsl"));
+        return Paths.get(properties.getProperty("vendorXsl","//srv-slaps/InterfaceSL_1C/XSL/Vend.xsl"));
 
     }
 

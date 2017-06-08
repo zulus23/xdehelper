@@ -56,18 +56,27 @@ public class RunExportAction extends AbstractAction {
         if (control.getText().contains("Экспорт контрагентов")) {
             TableView<PartnerClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
             RadioButton customerSelected = FXUtils.getChildByID(control.getTabPane(), "rbCustomer");
-            CheckBox withLcrSelected = FXUtils.getChildByID(control.getTabPane(), "chWithLcr");
+            RadioButton vendorSelected = FXUtils.getChildByID(control.getTabPane(), "rbVendor");
+            RadioButton withLcrSelected = FXUtils.getChildByID(control.getTabPane(), "rbWithLcr");
+            RadioButton withOutLcrSelected = FXUtils.getChildByID(control.getTabPane(), "rbWithOutLcr");
+            RadioButton onlyLcrSelected = FXUtils.getChildByID(control.getTabPane(), "rbOnlyLcr");
+            /*Обработка клиентов*/
             if(customerSelected.isSelected()){
 
-                new CreateXMLForCustomer(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
-                                        .run();
+                if(withLcrSelected.isSelected() | withOutLcrSelected.isSelected())
+                    new CreateXMLForCustomer(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
+                                            .run();
                                         //.whenComplete(this::deleteCustomerFromView);
-                if (withLcrSelected.isSelected()){
+                if (withLcrSelected.isSelected() | onlyLcrSelected.isSelected()  ){
                     new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
                 }
 
 
             }
+            if(vendorSelected.isSelected()){
+
+            }
+
 
         }
     }

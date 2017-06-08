@@ -32,11 +32,14 @@ public class XDEImportPartnerController extends AbstractController/* implements 
     @FXML
     private RadioButton rbVendor;
     @FXML
-    private RadioButton rbLcr;
-
-
+    private RadioButton rbWithLcr;
     @FXML
-    private CheckBox chWithLcr;
+    private RadioButton rbWithOutLcr;
+    @FXML
+    private RadioButton rbOnlyLcr;
+
+
+
 
     public XDEImportPartnerController(Enterprise enterprise){
       super(enterprise);
@@ -46,12 +49,7 @@ public class XDEImportPartnerController extends AbstractController/* implements 
     public void initialize(URL location, ResourceBundle resources) {
 
         super.initialize(location,resources);
-        chWithLcr.disableProperty().bind(Bindings.selectBoolean(rbLcr.selectedProperty()));
-        chWithLcr.disableProperty().addListener((e)->{
-            if (chWithLcr.isDisable()){
-                chWithLcr.setSelected(false);
-            }
-        });
+
 
     }
 
@@ -62,7 +60,7 @@ public class XDEImportPartnerController extends AbstractController/* implements 
         StringTokenizer tokenizer = new StringTokenizer(super.getClipboard().getString());
 
         super.getItemView().getItems().clear();
-        if(chWithLcr.isSelected()){
+        if(rbWithLcr.isSelected()|| rbOnlyLcr.isSelected()  ){
             while (tokenizerPartnerLcr.hasMoreTokens()) {
                 String partner = null;
                 String lcr = null;

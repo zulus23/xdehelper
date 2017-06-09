@@ -6,11 +6,13 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import ru.zhukov.xde.domain.Enterprise;
+import ru.zhukov.xde.ui.AbstractController;
 import ru.zhukov.xde.ui.XDEImportItemController;
 import ru.zhukov.xde.ui.XDEImportPartnerController;
 
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Gukov on 05.06.2017.
@@ -18,8 +20,8 @@ import java.io.IOException;
 public class ExportPartnerViewAction extends AbstractViewAction {
 
 
-    public ExportPartnerViewAction(TabPane tabPane, Enterprise selectedPartner) {
-        super(tabPane,selectedPartner);
+    public ExportPartnerViewAction(TabPane tabPane, Enterprise selectedPartner,Map<Tab,AbstractController> controllerMap) {
+        super(tabPane,selectedPartner,controllerMap);
     }
 
 
@@ -34,7 +36,7 @@ public class ExportPartnerViewAction extends AbstractViewAction {
             itemTab.setContent(itemView);
             tabPane.setTabMaxWidth(160);
             tabPane.getTabs().add(itemTab);
-
+            tabPane.getSelectionModel().select(itemTab);
         }catch (IOException ex){
 
             ex.printStackTrace();

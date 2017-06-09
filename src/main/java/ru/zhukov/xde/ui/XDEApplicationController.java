@@ -1,5 +1,6 @@
 package ru.zhukov.xde.ui;
 
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Orientation;
@@ -50,8 +51,11 @@ public class XDEApplicationController implements Initializable {
         miExit.setOnAction(ExitAction::action);
         miExit.setAccelerator(KeyCombination.keyCombination("Ctrl+F4"));
 
-        miExportItem.setOnAction(e -> new ExportItemViewAction(tabPane,listEnterprise.getSelectionModel().getSelectedItem()).action(e));
-        miExportPartner.setOnAction(e -> new ExportPartnerViewAction(tabPane,listEnterprise.getSelectionModel().getSelectedItem()).action(e));
+        miExportItem.setOnAction(e -> new ExportItemViewAction(tabPane,listEnterprise.getSelectionModel().getSelectedItem(),controllerMap).action(e));
+        miExportPartner.setOnAction(e -> {
+            new ExportPartnerViewAction(tabPane,listEnterprise.getSelectionModel().getSelectedItem(),controllerMap).action(e);
+
+        });
 
 
         miPaste.setOnAction(e -> new PasteAction(tabPane.getSelectionModel().getSelectedItem()).action(e));
@@ -81,7 +85,13 @@ public class XDEApplicationController implements Initializable {
 
         createButtonToolBar();
         toolBarApplication.getItems().add(listEnterprise);
-
+        tabPane.getTabs().addListener( (ListChangeListener<? super Tab>) change -> {
+            while(change.next()){
+              if(change.wasRemoved()){
+                  controllerMap.computeIfPresent(change.getRemoved().get(0),(key,oldValue)->null);
+              }
+            }
+        });
 
 
 

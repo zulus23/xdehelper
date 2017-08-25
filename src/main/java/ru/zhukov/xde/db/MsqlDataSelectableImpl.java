@@ -229,7 +229,7 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
           item.setItem(resultSet.getString(2));
           item.setDescription(resultSet.getString(3));
           item.setRusDescription(resultSet.getString(4));
-          item.setCodeSync(resultSet.getString(5));
+          //item.setCodeSync(resultSet.getString(5));
           item.setTax(resultSet.getString(6));
           item.setProductCode(resultSet.getString(7));
           item.setRusDescription(resultSet.getString(8));

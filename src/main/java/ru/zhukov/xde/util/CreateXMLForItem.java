@@ -42,7 +42,7 @@ public class CreateXMLForItem {
                 .thenApply(s -> s.stream().map(i -> {
                     ItemsXML itemsXML = new ItemsXML(String.valueOf(System.nanoTime()));
                     itemsXML.getItm().add(new ItemsXML.ItemXML(i.getSite(), i.getItem(), i.getDescription(),
-                            i.getRusDescription(), i.getCodeSync(), i.getTax(), i.getProductCode(), i.getComment()));
+                            i.getRusDescription(), i.getEdizm().getCodeSyncWint1C(), i.getTax(), i.getProductCode(), i.getComment()));
                     return itemsXML;
                 }).collect(Collectors.toList()))
 

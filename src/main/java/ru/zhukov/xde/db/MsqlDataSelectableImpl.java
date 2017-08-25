@@ -28,7 +28,7 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
 
         String selecItem = String.format("SELECT '%s' as site, i.item, i.description,i.RUSExtDescription, m.Uf_Code_Sync,i.tax_code1"+
                                          ",i.product_code,comm_code as CommConv  FROM item i "+
-                                         "JOIN dbo.u_m m ON m.u_m = i.u_m where i.item  in  (%s)",
+                                         "JOIN dbo.u_m m ON m.u_m = i.u_m where i.item  in  ( %s )",
                                           enterprise.getDbConnect().getNameDatabase(),selectedItem
                                         );
 

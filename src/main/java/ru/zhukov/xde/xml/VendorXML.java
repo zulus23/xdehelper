@@ -20,7 +20,7 @@ public class VendorXML {
     @XmlRootElement(name = "vend")
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class VendXML {
-        @XmlAttribute(name = "cust_num")
+        @XmlAttribute(name = "vend_num")
         private String vendNum;
         @XmlAttribute(name = "LineSeq")
         private String linSeq;

@@ -1,10 +1,7 @@
 package ru.zhukov.xde.action;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import ru.zhukov.xde.db.DataSelectable;
 import ru.zhukov.xde.db.MsqlDataSelectableImpl;
 import ru.zhukov.xde.domain.Enterprise;
@@ -98,10 +95,13 @@ public class RunExportAction extends AbstractAction {
 
 
     private void deleteItemFromView(List<ItemsXML> itemsXMLS, Throwable throwable) {
-        TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
-        itemsXMLS. stream().forEach(e -> { findItem(tableView, e);
 
-        });
+            TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
+            itemsXMLS.stream().forEach(e -> {
+                findItem(tableView, e);
+
+            });
+
     }
 
     private void findItem(TableView<ItemClipBoard> tableView, ItemsXML e) {

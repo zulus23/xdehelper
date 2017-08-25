@@ -10,11 +10,20 @@ public enum DBConnect {
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_gotek;username=sa;password=kbghbrjy";
         }
+
+        @Override
+        public String persistenceName() {
+             return  "serviceGotek";
+        }
     },
     LITAR("Litar") {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_litar;username=sa;password=kbghbrjy";
+        }
+        @Override
+        public String persistenceName() {
+            throw new NoSuchMethodError("");
         }
     },
     POLYPACK("Polypack") {
@@ -22,17 +31,29 @@ public enum DBConnect {
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_polypack;username=sa;password=kbghbrjy";
         }
+        @Override
+        public String persistenceName() {
+            throw new NoSuchMethodError("");
+        }
     },
     PRINT("Print") {
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_print;username=sa;password=kbghbrjy";
         }
+        @Override
+        public String persistenceName() {
+            throw new NoSuchMethodError("");
+        }
     },
     CPU("CPU"){
         @Override
         public String connectString() {
             return "jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_cpu;username=sa;password=kbghbrjy";
+        }
+        @Override
+        public String persistenceName() {
+            throw new NoSuchMethodError("");
         }
     };
 
@@ -47,5 +68,6 @@ public enum DBConnect {
     }
 
     public abstract String connectString();
+    public abstract String persistenceName();
 
 }

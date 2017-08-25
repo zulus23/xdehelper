@@ -31,7 +31,7 @@ public class ExportItemViewAction extends AbstractViewAction {
         Optional<Tab> tabOptional = super.mapController.keySet()
                           .stream()
                           .filter(e-> e.getText()
-                                              .contains("Экспорт изделий"))
+                                       .contains("Экспорт изделий"))
 
                           .findFirst();
 

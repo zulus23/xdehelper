@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,9 @@ public class CreateXMLForItem {
                             i.getRusDescription(), i.getCodeSync(), i.getTax(), i.getProductCode(), i.getComment()));
                     return itemsXML;
                 }).collect(Collectors.toList()))
+
                 .whenCompleteAsync(this::createItemXML);
+
                 //.whenComplete(this::deleteItemFromView);
     }
 
@@ -68,8 +71,8 @@ public class CreateXMLForItem {
                 StreamResult output = new StreamResult(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectoryXML.toString(),
                         String.format("%10s_item_1c.xml",item.getSeq())).toFile()),
                         Charset.forName("windows-1251")));
-                transformer.transform(xmlsource,output);
-                output.getWriter().close();
+                    transformer.transform(xmlsource, output);
+                    output.getWriter().close();
 
 
             }

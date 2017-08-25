@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class CreateXMLForVendor {
                             vendXML.setCountryCode(i.getCountryCode());
                             vendXML.setFullName(i.getFullName());
                             vendXML.setName(i.getName());
-                            vendXML.setOkpo(i.getOkpo());
+                            vendXML.setOkpo(Optional.ofNullable(i.getOkpo()).orElse(""));
                             vendXML.setLinSeq("");
                             vendorXML.setCust(vendXML);
                             return vendorXML;

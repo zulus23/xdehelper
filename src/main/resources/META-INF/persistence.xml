@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="serviceGotek" transaction-type="RESOURCE_LOCAL">
+       <properties>
+           <property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
+           <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://srv-sldb/sl_gotek" />
+           <property name="javax.persistence.jdbc.user" value="report"/>
+           <property name="javax.persistence.jdbc.password" value="report"/>
+       </properties>
+    </persistence-unit>
+</persistence>

@@ -46,10 +46,10 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         return null;
     }
 
-    private String collectNameForSelect(String[] items) {
+    /*private String collectNameForSelect(String[] items) {
         return Arrays.asList(items).stream().map(s -> String.format("'%s'",s)).collect(Collectors.joining(","));
     }
-
+*/
     @Override
     public List<Customer> selectCustomers(String... items) {
         String selectNumberCustomer = collectNameForSelect(items);
@@ -202,7 +202,7 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
         while(resultSet.next()){
             Customer customer = new Customer();
             customer.setSite(resultSet.getString(1));
-            customer.setCustNum(resultSet.getString(2));
+            customer.setCustomerNumber(resultSet.getString(2));
             customer.setName(resultSet.getString(3));
             customer.setFullName(resultSet.getString(4));
             customer.setInn(resultSet.getString(5));

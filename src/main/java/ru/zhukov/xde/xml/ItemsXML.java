@@ -18,6 +18,11 @@ public class ItemsXML {
     private  List<ItemXML> itm;
 
 
+    public ItemsXML(String seq, List<ItemXML> itm) {
+        this.seq = seq;
+        this.itm = itm;
+    }
+
     public static class ItemXML {
 
         @XmlAttribute(name = "site")

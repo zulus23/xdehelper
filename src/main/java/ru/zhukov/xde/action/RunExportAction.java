@@ -1,28 +1,22 @@
 package ru.zhukov.xde.action;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.*;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import ru.zhukov.xde.db.DataSelectable;
-import ru.zhukov.xde.db.MsqlDataSelectableImpl;
+import ru.zhukov.xde.db.JPADataSelectableImpl;
 import ru.zhukov.xde.domain.Enterprise;
-import ru.zhukov.xde.domain.Item;
 import ru.zhukov.xde.util.*;
 import ru.zhukov.xde.xml.CustomerXML;
 import ru.zhukov.xde.xml.ItemsXML;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.transform.*;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +29,8 @@ public class RunExportAction extends AbstractAction {
     private Path sourceXLS, outputDirectoryXML;
     public RunExportAction(Tab selectedTab, Enterprise enterprise) {
         super(selectedTab, enterprise);
-        dataSelectable = new MsqlDataSelectableImpl(enterprise);
+        //dataSelectable = new MsqlDataSelectableImpl(enterprise);
+        dataSelectable = new JPADataSelectableImpl(enterprise);
     }
 
 
@@ -45,6 +40,7 @@ public class RunExportAction extends AbstractAction {
         if (control.getText().contains("Экспорт изделий")) {
             sourceXLS = SetupApplication.getInstance().itemXsl();
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
+
             List<ItemClipBoard> clipBoards =  tableView.getItems().stream().collect(Collectors.toList());
               new CreateXMLForItem(clipBoards,dataSelectable)
                                   .run()
@@ -95,7 +91,18 @@ public class RunExportAction extends AbstractAction {
 
 
     private void deleteItemFromView(List<ItemsXML> itemsXMLS, Throwable throwable) {
+            if(throwable != null){
 
+                Platform.runLater(() ->  {
+                    TableView stage =  FXUtils.getChildByID(control.getTabPane(), "itemView");
+                    Alert alert = new Alert(AlertType.ERROR,"Произошла ошибка :  "+throwable.getMessage());
+                    alert.setTitle("Ошибка экспорта");
+
+                    alert.initOwner(stage.getScene().getWindow());
+
+                    alert.show();
+                });
+            }
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
             itemsXMLS.stream().forEach(e -> {
                 findItem(tableView, e);

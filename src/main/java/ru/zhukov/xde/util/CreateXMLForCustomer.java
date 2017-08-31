@@ -44,7 +44,7 @@ public class CreateXMLForCustomer {
                             customerXML.setSeq(String.valueOf(System.nanoTime()));
                             customerXML.setAction("C");
                             CustomerXML.CustXML custXML = new CustomerXML.CustXML();
-                            custXML.setCustNum(i.getCustNum());
+                            custXML.setCustNum(i.getCustomerNumber());
                             custXML.setInn(i.getInn());
                             custXML.setKpp(i.getKpp());
                             custXML.setAddressFull(i.getAddress());

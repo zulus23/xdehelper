@@ -38,7 +38,7 @@ public class CreateXMLForItem {
     public CompletableFuture<List<ItemsXML>> run(){
 
         return CompletableFuture.supplyAsync(() -> itemClipBoards.stream().map(s -> s.getItem()).collect(Collectors.toList()))
-                .thenApply(s -> dataSelectable.selectItems(s.toArray(new String[]{})))
+                .thenApply(s -> dataSelectable.selectItems(s.toArray(new String[0]/*{}*/)))
                 .thenApply(s -> s.stream().map(i -> {
                     ItemsXML itemsXML = new ItemsXML(String.valueOf(System.nanoTime()));
                     itemsXML.getItm().add(new ItemsXML.ItemXML(i.getSite(), i.getItem(), i.getDescription(),
@@ -79,7 +79,7 @@ public class CreateXMLForItem {
 
 
         }catch (Exception ex){
-
+            throw  new RuntimeException("Ошибка при формироании xml файла :",ex);
         }
     }
 

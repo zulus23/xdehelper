@@ -23,7 +23,7 @@ public enum DBConnect {
         }
         @Override
         public String persistenceName() {
-            throw new NoSuchMethodError("");
+            return "serviceLitar";
         }
     },
     POLYPACK("Polypack") {

@@ -10,6 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import ru.zhukov.xde.db.DataSelectable;
 import ru.zhukov.xde.db.JPADataSelectableImpl;
+import ru.zhukov.xde.db.MsqlDataSelectableImpl;
 import ru.zhukov.xde.domain.Enterprise;
 import ru.zhukov.xde.util.*;
 import ru.zhukov.xde.xml.CustomerXML;
@@ -58,11 +59,14 @@ public class RunExportAction extends AbstractAction {
 
                 if(withLcrSelected.isSelected() | withOutLcrSelected.isSelected()) {
                     new CreateXMLForCustomer(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
-                            .run();
+                            .run()
+                            .whenComplete(this::showMessage) ;
                     //.whenComplete(this::deleteCustomerFromView);
                 }
                 if (withLcrSelected.isSelected() | onlyLcrSelected.isSelected()  ){
-                    new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
+                    new CreateXMLForLcrCustomer(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable)
+                              .run()
+                              .whenComplete(this::showMessage) ;
                 }
 
 
@@ -70,17 +74,52 @@ public class RunExportAction extends AbstractAction {
             if(vendorSelected.isSelected()){
                 if(withLcrSelected.isSelected() | withOutLcrSelected.isSelected()) {
                     new CreateXMLForVendor(tableView.getItems().stream().collect(Collectors.toList()), dataSelectable)
-                            .run();
+                            .run()
+                            .whenComplete(this::showMessage) ;
                     //.whenComplete(this::deleteCustomerFromView);
                 }
                 if (withLcrSelected.isSelected() | onlyLcrSelected.isSelected()  ){
-                    new CreateXMLForLcrVendor(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable).run();
+                    new CreateXMLForLcrVendor(tableView.getItems().stream().collect(Collectors.toList()),dataSelectable)
+                            .run()
+                            .whenComplete(this::showMessage) ;
 
                 }
             }
 
 
         }
+    }
+
+    private void showMessage(List<?> item, Throwable throwable) {
+        if(throwable != null){
+
+            showMessageAboutError(throwable);
+        } else {
+            Platform.runLater(() ->  {
+
+                TableView stage =  FXUtils.getChildByID(control.getTabPane(), "itemView");
+                Alert alert = new Alert(AlertType.INFORMATION,"Выгрузка произошла успешно ");
+                alert.setTitle("Успешный экспорт");
+
+                alert.initOwner(stage.getScene().getWindow());
+
+                alert.show();
+            });
+        }
+
+
+    }
+
+    private void showMessageAboutError(Throwable throwable) {
+        Platform.runLater(() ->  {
+            TableView stage =  FXUtils.getChildByID(control.getTabPane(), "itemView");
+            Alert alert = new Alert(AlertType.ERROR,"Произошла ошибка :  "+throwable.getMessage());
+            alert.setTitle("Ошибка экспорта");
+
+            alert.initOwner(stage.getScene().getWindow());
+
+            alert.show();
+        });
     }
 
     private void deleteCustomerFromView(List<CustomerXML> customerXMLS, Throwable throwable) {
@@ -93,15 +132,7 @@ public class RunExportAction extends AbstractAction {
     private void deleteItemFromView(List<ItemsXML> itemsXMLS, Throwable throwable) {
             if(throwable != null){
 
-                Platform.runLater(() ->  {
-                    TableView stage =  FXUtils.getChildByID(control.getTabPane(), "itemView");
-                    Alert alert = new Alert(AlertType.ERROR,"Произошла ошибка :  "+throwable.getMessage());
-                    alert.setTitle("Ошибка экспорта");
-
-                    alert.initOwner(stage.getScene().getWindow());
-
-                    alert.show();
-                });
+                showMessageAboutError(throwable);
             }
             TableView<ItemClipBoard> tableView = FXUtils.getChildByID(control.getTabPane(), "itemView");
             itemsXMLS.stream().forEach(e -> {

@@ -76,7 +76,17 @@ public class JPADataSelectableTest {
         assertTrue(lcrs.size() == 1);
 
     }
+    @Test
+    public void vendorMustHaveLcr(){
+        Enterprise enterprise = new Enterprise("GOTEK","SL_DB", DBConnect.GOTEK);
+        JPADataSelectableImpl selectableJPA = new JPADataSelectableImpl(enterprise);
+        List<Vendor> vendors = selectableJPA.selectVendors("П000004");
+        assertTrue(vendors.size() == 1);
+        List<VendorLcr> lcrs =  selectableJPA.selectVendorLcr(String.format("%s=%s",vendors.get(0).getVendNum(),"182/32/0206"));
+        assertTrue(lcrs.size() == 1);
+        assertEquals("2006-02-16 00:00:00.0",lcrs.get(0).getDate());
 
+    }
 
 
 

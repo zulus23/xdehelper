@@ -3,12 +3,14 @@
 
     <persistence-unit name="serviceGotek" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
         <class>ru.zhukov.xde.domain.Edizm</class>
         <class>ru.zhukov.xde.domain.Item</class>
         <class>ru.zhukov.xde.domain.Country</class>
         <class>ru.zhukov.xde.domain.Customer</class>
         <class>ru.zhukov.xde.domain.CustomerLcr</class>
         <class>ru.zhukov.xde.domain.Vendor</class>
+        <class>ru.zhukov.xde.domain.VendorLcr</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
@@ -22,6 +24,11 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <class>ru.zhukov.xde.domain.Edizm</class>
         <class>ru.zhukov.xde.domain.Item</class>
+        <class>ru.zhukov.xde.domain.Country</class>
+        <class>ru.zhukov.xde.domain.Customer</class>
+        <class>ru.zhukov.xde.domain.CustomerLcr</class>
+        <class>ru.zhukov.xde.domain.Vendor</class>
+        <class>ru.zhukov.xde.domain.VendorLcr</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://SRV-SLDB:1433;databaseName=sl_litar"/>

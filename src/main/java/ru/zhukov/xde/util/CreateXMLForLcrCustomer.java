@@ -38,8 +38,8 @@ public class CreateXMLForLcrCustomer {
     }
 
 
-    public void run() {
-         CompletableFuture.supplyAsync(() -> listPartners.stream()
+    public  CompletableFuture<? extends List<CustomerLcrXML>> run() {
+         return CompletableFuture.supplyAsync(() -> listPartners.stream()
                                                                .filter(e -> Objects.nonNull(e.getLcr()))
                                                                .map(i -> { return  i.getPartner()+"="+i.getLcr();})
                                                                .collect(Collectors.toList()))

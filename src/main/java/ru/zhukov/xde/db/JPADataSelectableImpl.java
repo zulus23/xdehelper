@@ -120,8 +120,25 @@ public class JPADataSelectableImpl implements DataSelectable{
     }
 
     @Override
-    public List<VendorLcr> selectVendorLcr(String... items) {
-        return null;
+    public List<VendorLcr> selectVendorLcr(String... lcr) {
+        try{
+            entityManager = entityManagerFactory.createEntityManager();
+            String whereString = collectVendorLcr(lcr);
+            return  entityManager.createNativeQuery(String.format("SELECT '%s' as site,l.vend_lcr_num,v.RUSinn, v.RUSkpp,l.issue_date,v.vend_num,l.curr_code\n" +
+                    " FROM dbo.vend_lcr l\n" +
+                    " JOIN dbo.vendaddr v ON v.vend_num = l.vend_num\n" +
+                    " WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),whereString),VendorLcr.class)
+                    .getResultList();
+
+        }catch(Exception e ){
+            throw new RuntimeException("Ошибка при выполнении запроса  данных по договору поставщика",e);
+        } finally {
+            if (entityManager.isOpen()) {
+                entityManager.close();
+            }
+        }
+
+
     }
 
 

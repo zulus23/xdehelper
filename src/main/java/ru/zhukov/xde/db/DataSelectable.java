@@ -28,5 +28,11 @@ public interface DataSelectable {
         }).collect(Collectors.joining());
     }
 
+    default String collectVendorLcr(String[] items) {
+        return Arrays.asList(items).stream().map(e -> {
+            String[] temp=  e.split("\\=");
+            return  String.format("(v.vend_num = '%s' AND l.vend_lcr_num='%s') OR ",temp[0],temp[1]);
+        }).collect(Collectors.joining());
+    }
 
 }

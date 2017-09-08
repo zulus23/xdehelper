@@ -74,15 +74,15 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
 
     @Override
     public List<CustomerLcr> selectCustomerLcr(String... items) {
-        String whereString = Arrays.asList(items).stream().map(e -> {
+        /*String whereString = Arrays.asList(items).stream().map(e -> {
            String[] temp=  e.split("\\=");
            return  String.format("(c.cust_num = '%s' AND l.lcr_num='%s') OR ",temp[0],temp[1]);
-        }).collect(Collectors.joining());
+        }).collect(Collectors.joining());*/
 
         String sqlSelectLcrCustomer = String.format("SELECT '%s',l.lcr_num,c.RUSinn, c.RUSkpp,l.issue_date,c.cust_num,l.curr_code\n" +
                                       "FROM dbo.cust_lcr l\n" +
                                       "JOIN dbo.custaddr c ON c.cust_num = l.cust_num\n" +
-                                      "WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),whereString);
+                                      "WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),collectLcr(items));
         try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlSelectLcrCustomer);) {
@@ -120,15 +120,15 @@ public class MsqlDataSelectableImpl  implements DataSelectable{
 
     @Override
     public List<VendorLcr> selectVendorLcr(String... items) {
-        String whereString = Arrays.asList(items).stream().map(e -> {
+        /*String whereString = Arrays.asList(items).stream().map(e -> {
             String[] temp=  e.split("\\=");
             return  String.format("(v.vend_num = '%s' AND l.vend_lcr_num='%s') OR ",temp[0],temp[1]);
         }).collect(Collectors.joining());
-
+*/
         String sqlSelectLcrVendor = String.format("SELECT '%s',l.vend_lcr_num,v.RUSinn, v.RUSkpp,l.issue_date,v.vend_num,l.curr_code\n" +
                 "FROM dbo.vend_lcr l\n" +
                 "JOIN dbo.vendaddr v ON v.vend_num = l.vend_num\n" +
-                "WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),whereString);
+                "WHERE %s  1=2", enterprise.getDbConnect().getNameDatabase(),collectVendorLcr(items));
         try(Connection conn = DriverManager.getConnection(enterprise.getDbConnect().connectString());
             Statement statement = conn.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlSelectLcrVendor);) {
